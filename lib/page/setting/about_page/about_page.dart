@@ -322,22 +322,32 @@ class _AboutPageState extends State<AboutPage> {
 
   List<Link> linkData() => [
         Link(
-          icon: const Icon(Icons.home),
-          name: FlutterI18n.translate(
-            context,
-            "setting.about_page.homepage",
-          ),
-          url: "https://legacy.superbart.top/xdyou.html",
-        ),
-        Link(
           icon: const Icon(Icons.code),
           name: FlutterI18n.translate(
             context,
             "setting.about_page.code",
           ),
-          url: "https://github.com/BenderBlog/traintime_pda",
+          url: "https://github.com/RainVenturer/TrainTime-GXMate",
         ),
       ];
+  // List<Link> linkData() => [
+  //       Link(
+  //         icon: const Icon(Icons.home),
+  //         name: FlutterI18n.translate(
+  //           context,
+  //           "setting.about_page.homepage",
+  //         ),
+  //         url: "https://legacy.superbart.top/xdyou.html",
+  //       ),
+  //       Link(
+  //         icon: const Icon(Icons.code),
+  //         name: FlutterI18n.translate(
+  //           context,
+  //           "setting.about_page.code",
+  //         ),
+  //         url: "https://github.com/BenderBlog/traintime_pda",
+  //       ),
+  //     ];
 
   Widget _title(context) {
     return [

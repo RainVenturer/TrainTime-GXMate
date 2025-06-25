@@ -31,7 +31,7 @@ class JwxtSession extends JWSSession {
   Dio get dioEhall => super.dio..options = BaseOptions(headers: refererHeader);
 
   Future<bool> isLoggedIn() async {
-    var response = await dioEhall.get(
+    var response = await dio.get(
       "https://jwxt.gxmu.edu.cn/new/welcome.page",
     );
     log.info(

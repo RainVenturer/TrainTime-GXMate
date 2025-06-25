@@ -24,10 +24,10 @@ Dio get dioRelease => Dio()
     'Accept': 'application/vnd.github.v3+json',
   };
 
-const url = "https://legacy.superbart.top/traintime_pda_backend";
+const url = "https://zamyang.cn/api";
 // GitHub API endpoint for releases
 const githubApiUrl =
-    "https://api.github.com/repos/RainVenturer/traintime_pda_for_gxmu/releases/latest";
+    "https://api.github.com/repos/RainVenturer/TrainTime-GXMate/releases/latest";
 
 final messageLock = Lock(reentrant: false);
 final updateLock = Lock(reentrant: false);
@@ -38,7 +38,7 @@ Future<void> checkMessage() => messageLock.synchronized(() async {
       List<NoticeMessage> toAdd = [];
 
       try {
-        toAdd = await dio.get("$url/message.json").then(
+        toAdd = await dio.get("$url/message").then(
               (value) => List<NoticeMessage>.generate(
                 value.data.length,
                 (index) => NoticeMessage.fromJson(value.data[index]),

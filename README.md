@@ -3,11 +3,11 @@
 <h1>Traintime PDA</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/github/stars/RainVenturer/traintime_pda_for_gxmu" alt="Stars">&nbsp;
-  <img src="https://img.shields.io/github/downloads/RainVenturer/traintime_pda_for_gxmu/total" alt="Downloads">&nbsp;
-  <img src="https://img.shields.io/github/v/release/RainVenturer/traintime_pda_for_gxmu" alt="Version">&nbsp;
-  <img src="https://img.shields.io/github/last-commit/RainVenturer/traintime_pda_for_gxmu" alt="Last Commit">&nbsp;
-  <img src="https://img.shields.io/github/repo-size/RainVenturer/traintime_pda_for_gxmu" alt="Repo Size">
+  <img src="https://img.shields.io/github/stars/RainVenturer/TrainTime-GXMate" alt="Stars">&nbsp;
+  <img src="https://img.shields.io/github/downloads/RainVenturer/TrainTime-GXMate/total" alt="Downloads">&nbsp;
+  <img src="https://img.shields.io/github/v/release/RainVenturer/TrainTime-GXMate" alt="Version">&nbsp;
+  <img src="https://img.shields.io/github/last-commit/RainVenturer/TrainTime-GXMate" alt="Last Commit">&nbsp;
+  <img src="https://img.shields.io/github/repo-size/RainVenturer/TrainTime-GXMate" alt="Repo Size">
 </p>
 
 Traintime PDA，是为广西医科大学学生设计的开源信息查询软件，基于[Traintime PDA](https://github.com/BenderBlog/traintime_pda)项目修改。

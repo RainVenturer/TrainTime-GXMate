@@ -42,6 +42,13 @@ class UpdateDialog extends StatelessWidget {
             "setting.update_dialog.not_now",
           )),
         ),
+        TextButton(
+          onPressed: () => launchUrlString(updateMessage.github),
+          child: Text(FlutterI18n.translate(
+            context,
+            "setting.update_dialog.github_release",
+          )),
+        ),
         if (Platform.isIOS && updateMessage.ioslink != null)
           TextButton(
             onPressed: () => launchUrlString(updateMessage.ioslink!),
@@ -50,22 +57,17 @@ class UpdateDialog extends StatelessWidget {
               "setting.update_dialog.app_store",
             )),
           )
-        else if (Platform.isAndroid && updateMessage.apkUrl != null)
-          TextButton(
-            onPressed: () => launchUrlString(updateMessage.apkUrl!),
-            child: Text(FlutterI18n.translate(
-              context,
-              "setting.update_dialog.download_apk",
-            )),
-          )
-        else
-          TextButton(
-            onPressed: () => launchUrlString(updateMessage.github),
-            child: Text(FlutterI18n.translate(
-              context,
-              "setting.update_dialog.github_release",
-            )),
-          )
+        else if (Platform.isAndroid) ...[
+          if (updateMessage.getPreferredApkUrl() != null)
+            TextButton(
+              onPressed: () =>
+                  launchUrlString(updateMessage.getPreferredApkUrl()!),
+              child: Text(FlutterI18n.translate(
+                context,
+                "setting.update_dialog.download_apk",
+              )),
+            )
+        ]
       ],
     );
   }
