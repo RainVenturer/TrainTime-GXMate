@@ -130,6 +130,20 @@ class ScoreDistributionChart extends StatelessWidget {
           titlesData: _createTitlesData(),
           gridData: const FlGridData(show: false),
           borderData: FlBorderData(show: false),
+          barTouchData: BarTouchData(
+            touchTooltipData: BarTouchTooltipData(
+              tooltipBgColor: Theme.of(context).colorScheme.primaryContainer,
+              tooltipRoundedRadius: 8,
+              getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                return BarTooltipItem(
+                  rod.toY.toInt().toString(),
+                  TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                );
+              },
+            ),
+          ),
         ),
       ),
     );
