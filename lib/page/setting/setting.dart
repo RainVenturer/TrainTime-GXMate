@@ -109,7 +109,7 @@ class _SettingWindowState extends State<SettingWindow> {
                 TextSpan(
                   text: Platform.isIOS || Platform.isMacOS
                       ? "XDYou"
-                      : 'Traintime PDA',
+                      : 'Traintime GXMate',
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
