@@ -150,8 +150,8 @@ class ClassTableFile extends JwxtSession {
           source: Source.school,
           isWinter: i["xnxqdm"][5] == "1" ? true : false,
           index: toReturn.classDetail.indexOf(toDeal),
-          startTime: i["qssj"], // 上课开始时间
-          endTime: i["jssj"], // 上课结束时间
+          startTime: i["qssj"].toString().substring(0, 5), // 上课开始时间
+          endTime: i["jssj"].toString().substring(0, 5), // 上课结束时间
           start: resultTime[0], // 上课开始节次
           teacher: i["teaxms"], // 任课教师
           stop: resultTime[1], // 上课结束节次
@@ -386,9 +386,7 @@ class ClassTableFile extends JwxtSession {
   Future<ClassTableData> getEhall() async {
     Map<String, dynamic> qResult = {};
     log.info("[getClasstable][getEhall] Login the system.");
-    if (!await isLoggedIn()) {
-      await useJwxt();
-    }
+    await useJwxt();
 
     log.info(
       "[getClasstable][getEhall] "

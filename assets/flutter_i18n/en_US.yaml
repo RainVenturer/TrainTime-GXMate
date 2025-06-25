@@ -374,6 +374,7 @@ login:
       title: "Please enter captcha"
       hint: "Input captcha"
       message_on_empty: "Please enter captcha"
+      message_on_invalid: "Please enter a valid captcha"
    slider_title: "Server authentication service"
 
 # 校园网信息
@@ -459,6 +460,11 @@ score:
          Unpassed subjects：{unpassed}
          Public elective credits already obtained：{not_core_credit}
          The data provided by this program is for reference only, and the developer is not responsible for its accuracy
+   score_analyze_card:
+      no_data: "No score analysis data"
+      distribution_title: "Class score distribution"
+      course_rank: "Course rank: {rank}/{total}"
+      class_rank: "Class rank: {rank}/{total}"
    score_compose_card:
       no_detail: "No detailed information provided"
       fetching: "Fetching..."
@@ -507,6 +513,8 @@ setting:
    color_setting: "Color theme"
    simplify_timeline: "Simplify schedule timeline"
    simplify_timeline_description: "Reduce space occupation while no schedule"
+   show_encourage_word: "Show encourage word"
+   show_encourage_word_description: "Whether show encourage word on the homepage"
    # 账号设置
    account_setting: "Account Settings"
    sport_password_setting: "PE system password"
@@ -587,6 +595,7 @@ setting:
       download_apk: "Download APK"
       github_release: "Go to Git Release"
       new_content: "New features from version {code}:\n"
+      available_versions: "Available versions (choose one suitable for your device):"
    localization_dialog:
       title: "Languages"
       undefined: "Follow system setting"

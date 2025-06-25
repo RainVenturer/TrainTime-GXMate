@@ -362,7 +362,7 @@ class _AboutPageState extends State<AboutPage> {
               TextSpan(
                 text: Platform.isIOS || Platform.isMacOS
                     ? "XDYou"
-                    : "Traintime GXMate",
+                    : "TrainTime GXMate",
               ),
               TextSpan(
                 text: " v${preference.packageInfo.version}\n",
@@ -434,7 +434,7 @@ class _AboutPageState extends State<AboutPage> {
               context: context,
               applicationName: Platform.isIOS || Platform.isMacOS
                   ? "GXMUer"
-                  : "Traintime GXMate",
+                  : "TrainTime GXMate",
               applicationVersion: "v${preference.packageInfo.version}+"
                   "${preference.packageInfo.buildNumber}",
               applicationIcon: const AppIconWidget().padding(vertical: 16),

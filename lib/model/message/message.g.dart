@@ -14,6 +14,7 @@ UpdateMessage _$UpdateMessageFromJson(Map<String, dynamic> json) =>
       ioslink: json['ioslink'] as String,
       github: json['github'] as String,
       fdroid: json['fdroid'] as String,
+      apkUrls: json['apkUrls'] as Map<String, String>?,
     );
 
 Map<String, dynamic> _$UpdateMessageToJson(UpdateMessage instance) =>
@@ -23,6 +24,7 @@ Map<String, dynamic> _$UpdateMessageToJson(UpdateMessage instance) =>
       'ioslink': instance.ioslink,
       'github': instance.github,
       'fdroid': instance.fdroid,
+      'apkUrls': instance.apkUrls,
     };
 
 NoticeMessage _$NoticeMessageFromJson(Map<String, dynamic> json) =>

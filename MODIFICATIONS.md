@@ -31,6 +31,7 @@
 - `lib\repository\captcha\captcha_solver.dart`: 一站式登录的验证码识别
 - `lib\repository\rsa_encryption.dart`: 一站式登录的 RSA 加密
 - `assets\captcha-solver-cas.tflite`: 一站式验证码识别模型
+- `lib\page\score\score_analyze_card.dart`: 成绩分析卡片
 
 ### 主要修改的文件
 - `lib/repository/*`：适配广西医科大学
@@ -53,6 +54,7 @@
 - `lib/page/sport_system/*`：删除体育系统相关页面
 - `lib/controller/exam_controller.dart`：删除考试系统相关页面
 - `lib/controller/experiment_controller.dart`：删除实验相关页面
+- `lib/page/homepage/notice_card/notice_card.dart`：删除公告卡片
 
 ## 版权和许可
 

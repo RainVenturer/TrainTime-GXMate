@@ -43,6 +43,7 @@ import 'package:watermeter/repository/gxmu_ids/classtable_session.dart';
 // import 'package:watermeter/repository/gxmu_ids/electricity_session.dart';
 // import 'package:watermeter/repository/gxmu_ids/score_session.dart';
 import 'package:watermeter/themes/color_seed.dart';
+import 'package:watermeter/page/setting/dialogs/encourage_word_dialog.dart';
 
 class SettingWindow extends StatefulWidget {
   const SettingWindow({super.key});
@@ -116,7 +117,8 @@ class _SettingWindowState extends State<SettingWindow> {
                   ),
                 ),
                 const TextSpan(
-                  text: '\nWritten by BenderBlog Rodriguez and contributors\nModified by RainVenturer and contributors',
+                  text:
+                      '\nWritten by BenderBlog Rodriguez and contributors\nModified by RainVenturer and contributors',
                 ),
               ],
             ),
@@ -322,6 +324,65 @@ class _SettingWindowState extends State<SettingWindow> {
                         builder: (context) => const ChangeLanguageDialog(),
                       );
                     }),
+                const Divider(),
+                ListTile(
+                  title: Text(FlutterI18n.translate(
+                    context,
+                    "setting.show_encourage_word",
+                  )),
+                  subtitle: Text(FlutterI18n.translate(
+                    context,
+                    "setting.show_encourage_word_description",
+                  )),
+                  trailing: Switch(
+                    value: preference.getBool(
+                      preference.Preference.showEncourageWord,
+                    ),
+                    onChanged: (bool value) {
+                      setState(() {
+                        preference
+                            .setBool(
+                              preference.Preference.showEncourageWord,
+                              value,
+                            )
+                            .then(
+                              (value) =>
+                                  ClassTableCard.reloadSettingsFromPref(),
+                            );
+                      });
+                    },
+                  ),
+                ),
+                ClipRect( // @ai 添加一个动画效果
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeInOut,
+                    height: preference.getBool(preference.Preference.showEncourageWord) ? 73.0 : 0.0,
+                    child: SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Divider(),
+                          ListTile(
+                              title: Text(FlutterI18n.translate(
+                                context,
+                              "setting.modify_encourage_word",
+                            )),
+                            trailing: const Icon(Icons.navigate_next),
+                            onTap: () {
+                              showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) =>
+                                    const EditEncourageWordDialog(),
+                              );
+                            }),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
               ])),
           // ReXCard(
           //   title: _buildListSubtitle(FlutterI18n.translate(

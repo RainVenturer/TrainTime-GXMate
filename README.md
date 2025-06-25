@@ -1,6 +1,6 @@
 <div align="center">
-<img src="./assets/icon.png" style="border-radius:10px; margin:10px; width:120px" alt="TrainTime PDA">
-<h1>Traintime PDA</h1>
+<img src="./assets/icon.png" style="border-radius:10px; margin:10px; width:120px" alt="TrainTime GXMate">
+<h1>TrainTime GXMate</h1>
 
 <p align="center">
   <img src="https://img.shields.io/github/stars/RainVenturer/TrainTime-GXMate" alt="Stars">&nbsp;
@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/github/repo-size/RainVenturer/TrainTime-GXMate" alt="Repo Size">
 </p>
 
-Traintime PDA，是为广西医科大学学生设计的开源信息查询软件，基于[Traintime PDA](https://github.com/BenderBlog/traintime_pda)项目修改。
+TrainTime GXMate，是为广西医科大学学生设计的开源信息查询软件，基于[Traintime PDA](https://github.com/BenderBlog/traintime_pda)项目修改。
 
 </div>
 

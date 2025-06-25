@@ -25,6 +25,15 @@ class ScoreSession extends JwxtSession {
 
   static bool get isCacheExist => file.existsSync();
 
+  int _safeint(String? value) {
+    // 转换为整数，如果为空则返回0
+    try {
+      return value?.trim().isEmpty == false ? int.parse(value!.trim()) : 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
   /// Must be called after [getScore]!
   /// If bug, just return dummy data.
   Future<List<ComposeDetail>> getDetail(
@@ -51,9 +60,7 @@ class ScoreSession extends JwxtSession {
           "[ScoreSession][getDetail] Cache detected, need login.",
         );
 
-        if (!await isLoggedIn()) {
-          await useJwxt();
-        }
+        await useJwxt();
       }
 
       var response = await dioEhall
@@ -119,7 +126,7 @@ class ScoreSession extends JwxtSession {
 
   /// Must be called after [getScore]!
   /// If bug, just return dummy data.
-  Future<List<ComposeAnalyze>> getAnalyze(String? CJDM) async {
+  Future<List<ComposeAnalyze>> getAnalyze(int? CJDM) async {
     List<ComposeAnalyze> toReturn = [];
     if (CJDM == null) {
       return [
@@ -133,15 +140,6 @@ class ScoreSession extends JwxtSession {
       ];
     }
 
-    int safeint(String? value) {
-      // 转换为整数，如果为空则返回0
-      try {
-        return value?.trim().isEmpty == false ? int.parse(value!.trim()) : 0;
-      } catch (e) {
-        return 0;
-      }
-    }
-
     try {
       log.info(
         "[ScoreSession][getAnalyze] isScoreListCacheUsed $isScoreListCacheUsed.",
@@ -152,9 +150,7 @@ class ScoreSession extends JwxtSession {
           "[ScoreSession][getAnalyze] Cache detected, need login.",
         );
 
-        if (!await isLoggedIn()) {
-          await useJwxt();
-        }
+        await useJwxt();
       }
 
       var response = await dioEhall.get(
@@ -169,8 +165,17 @@ class ScoreSession extends JwxtSession {
       var table = document.querySelector('table');
 
       if (table == null) {
-        throw Exception("无法找到成绩分析表格");
+        log.info(
+          "[ScoreSession][getAnalyze]"
+          "Unable to find the score analysis table.",
+        );
+        throw Exception("Unable to find the score analysis table.");
       }
+
+      log.info(
+        "[ScoreSession][getAnalyze]"
+        "Found the score analysis table.",
+      );
 
       var rows = table.querySelectorAll('tr');
 
@@ -184,10 +189,10 @@ class ScoreSession extends JwxtSession {
           name: cols[1].text.trim(),
           scoreDsitribution: Map.fromIterables(
             ['60分以下', '60-70分', '70-80分', '80-90分', '90分以上'],
-            cols.skip(2).take(5).map((e) => safeint(e.text.trim())),
+            cols.skip(2).take(5).map((e) => _safeint(e.text.trim())),
           ),
-          total: safeint(cols[7].text.trim()),
-          rank: safeint(cols[8].text.trim()),
+          total: _safeint(cols[7].text.trim()),
+          rank: _safeint(cols[8].text.trim()),
         ));
       }
 
@@ -271,9 +276,7 @@ class ScoreSession extends JwxtSession {
 
   Future<List<Score>> getCourseScoreFromJwxt() async {
     List<Score> toReturn = [];
-    if (!await isLoggedIn()) {
-      await useJwxt();
-    }
+    await useJwxt();
 
     /// Otherwise get fresh score data.
     Map<String, dynamic> querySetting = {

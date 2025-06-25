@@ -42,3 +42,13 @@ final typesIgnore = [
 ];
 
 const notCoreClassType = "公共任选";
+
+const List<String> kScoreRanges = [
+  '60分以下',
+  '60-70分',
+  '70-80分',
+  '80-90分',
+  '90分以上'
+];
+
+const List<String> kScoreLabels = ['<60', '60-70', '70-80', '80-90', '>90'];

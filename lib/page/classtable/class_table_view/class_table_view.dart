@@ -101,7 +101,7 @@ class _ClassTableViewState extends State<ClassTableView> {
       /// Leftest side, the index array.
       return List.generate(14, (index) {
         double height = blockheight(
-          index != 5 && index != 10 ? 4 : 3,
+          index != 5 && index != 10 ? 3.8 : 3,
         );
 
         late int indexOfChar;

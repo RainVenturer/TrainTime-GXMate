@@ -147,51 +147,51 @@ class ClassTableController extends GetxController {
     );
   }
 
-  // Future<void> addUserDefinedClass(
-  //   ClassDetail classDetail,
-  //   TimeArrangement timeArrangement,
-  // ) async {
-  //   userDefinedClassData.userDefinedDetail.add(classDetail);
-  //   timeArrangement.index = userDefinedClassData.userDefinedDetail.length - 1;
-  //   userDefinedClassData.timeArrangement.add(timeArrangement);
-  //   userDefinedFile.writeAsStringSync(jsonEncode(
-  //     userDefinedClassData.toJson(),
-  //   ));
-  //   await updateClassTable(isUserDefinedChanged: true);
-  // }
+  Future<void> addUserDefinedClass(
+    ClassDetail classDetail,
+    TimeArrangement timeArrangement,
+  ) async {
+    userDefinedClassData.userDefinedDetail.add(classDetail);
+    timeArrangement.index = userDefinedClassData.userDefinedDetail.length - 1;
+    userDefinedClassData.timeArrangement.add(timeArrangement);
+    userDefinedFile.writeAsStringSync(jsonEncode(
+      userDefinedClassData.toJson(),
+    ));
+    await updateClassTable(isUserDefinedChanged: true);
+  }
 
-  // Future<void> editUserDefinedClass(
-  //   TimeArrangement oldTimeArrangment,
-  //   ClassDetail classDetail,
-  //   TimeArrangement timeArrangement,
-  // ) async {
-  //   if (oldTimeArrangment.source != Source.user) return;
-  //   int tempIndex = oldTimeArrangment.index;
-  //   userDefinedClassData.timeArrangement.remove(oldTimeArrangment);
-  //   userDefinedClassData.userDefinedDetail[tempIndex] = classDetail;
-  //   timeArrangement.index = tempIndex;
-  //   userDefinedClassData.timeArrangement.add(timeArrangement);
-  //   userDefinedFile.writeAsStringSync(jsonEncode(
-  //     userDefinedClassData.toJson(),
-  //   ));
-  //   await updateClassTable(isUserDefinedChanged: true);
-  // }
+  Future<void> editUserDefinedClass(
+    TimeArrangement oldTimeArrangment,
+    ClassDetail classDetail,
+    TimeArrangement timeArrangement,
+  ) async {
+    if (oldTimeArrangment.source != Source.user) return;
+    int tempIndex = oldTimeArrangment.index;
+    userDefinedClassData.timeArrangement.remove(oldTimeArrangment);
+    userDefinedClassData.userDefinedDetail[tempIndex] = classDetail;
+    timeArrangement.index = tempIndex;
+    userDefinedClassData.timeArrangement.add(timeArrangement);
+    userDefinedFile.writeAsStringSync(jsonEncode(
+      userDefinedClassData.toJson(),
+    ));
+    await updateClassTable(isUserDefinedChanged: true);
+  }
 
-  // Future<void> deleteUserDefinedClass(
-  //   TimeArrangement timeArrangement,
-  // ) async {
-  //   if (timeArrangement.source != Source.user) return;
-  //   int tempIndex = timeArrangement.index;
-  //   userDefinedClassData.timeArrangement.remove(timeArrangement);
-  //   userDefinedClassData.userDefinedDetail.removeAt(timeArrangement.index);
-  //   for (var i in userDefinedClassData.timeArrangement) {
-  //     if (i.index >= tempIndex) i.index -= 1;
-  //   }
-  //   userDefinedFile.writeAsStringSync(jsonEncode(
-  //     userDefinedClassData.toJson(),
-  //   ));
-  //   await updateClassTable(isUserDefinedChanged: true);
-  // }
+  Future<void> deleteUserDefinedClass(
+    TimeArrangement timeArrangement,
+  ) async {
+    if (timeArrangement.source != Source.user) return;
+    int tempIndex = timeArrangement.index;
+    userDefinedClassData.timeArrangement.remove(timeArrangement);
+    userDefinedClassData.userDefinedDetail.removeAt(timeArrangement.index);
+    for (var i in userDefinedClassData.timeArrangement) {
+      if (i.index >= tempIndex) i.index -= 1;
+    }
+    userDefinedFile.writeAsStringSync(jsonEncode(
+      userDefinedClassData.toJson(),
+    ));
+    await updateClassTable(isUserDefinedChanged: true);
+  }
 
   /// The start day of the semester.
   DateTime get startDay => DateTime.parse(classTableData.termStartDay)

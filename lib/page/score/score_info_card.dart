@@ -72,6 +72,9 @@ class _ScoreInfoCardState extends State<ScoreInfoCard> {
                   detail: ScoreSession().getDetail(
                     c.scoreData[widget.mark].scoreCode,
                   ),
+                  analyze: ScoreSession().getAnalyze(
+                    c.scoreData[widget.mark].scoreCode,
+                  ),
                 ),
               );
             },

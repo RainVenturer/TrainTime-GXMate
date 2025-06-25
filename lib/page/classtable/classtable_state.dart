@@ -129,36 +129,36 @@ class ClassTableWidgetState with ChangeNotifier {
 
   /// Bridge function to add/del/edit user defined class
   /// Only main classtable support it!
-  // Future<void> addUserDefinedClass(
-  //   ClassDetail classDetail,
-  //   TimeArrangement timeArrangement,
-  // ) =>
-  //     classTableController
-  //         .addUserDefinedClass(
-  //           classDetail,
-  //           timeArrangement,
-  //         )
-  //         .then((value) => notifyListeners());
+  Future<void> addUserDefinedClass(
+    ClassDetail classDetail,
+    TimeArrangement timeArrangement,
+  ) =>
+      classTableController
+          .addUserDefinedClass(
+            classDetail,
+            timeArrangement,
+          )
+          .then((value) => notifyListeners());
 
-  // Future<void> editUserDefinedClass(
-  //   TimeArrangement oldTimeArrangment,
-  //   ClassDetail classDetail,
-  //   TimeArrangement timeArrangement,
-  // ) =>
-  //     classTableController
-  //         .editUserDefinedClass(
-  //           oldTimeArrangment,
-  //           classDetail,
-  //           timeArrangement,
-  //         )
-  //         .then((value) => notifyListeners());
+  Future<void> editUserDefinedClass(
+    TimeArrangement oldTimeArrangment,
+    ClassDetail classDetail,
+    TimeArrangement timeArrangement,
+  ) =>
+      classTableController
+          .editUserDefinedClass(
+            oldTimeArrangment,
+            classDetail,
+            timeArrangement,
+          )
+          .then((value) => notifyListeners());
 
-  // Future<void> deleteUserDefinedClass(
-  //   TimeArrangement timeArrangement,
-  // ) =>
-  //     classTableController
-  //         .deleteUserDefinedClass(timeArrangement)
-  //         .then((value) => notifyListeners());
+  Future<void> deleteUserDefinedClass(
+    TimeArrangement timeArrangement,
+  ) =>
+      classTableController
+          .deleteUserDefinedClass(timeArrangement)
+          .then((value) => notifyListeners());
 
   /// Decode Partner String info
   (String, ClassTableData, bool) decodePartnerClass(

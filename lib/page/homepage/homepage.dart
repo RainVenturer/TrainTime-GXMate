@@ -2,12 +2,12 @@
 // Copyright 2025 Traintime PDA authors.
 // SPDX-License-Identifier: MPL-2.0
 
-import 'dart:io';
+// import 'dart:io';
 
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:watermeter/page/homepage/home_card_padding.dart';
+// import 'package:watermeter/page/homepage/home_card_padding.dart';
 // import 'package:watermeter/page/homepage/info_widget/schoolnet_card.dart';
 import 'package:watermeter/page/public_widget/toast.dart';
 import 'package:get/get.dart';
@@ -31,6 +31,9 @@ import 'package:watermeter/page/homepage/toolbox/score_card.dart';
 // import 'package:watermeter/page/login/jc_captcha.dart';
 // import 'package:watermeter/repository/preference.dart' as prefs;
 import 'package:watermeter/repository/captcha/captcha_solver.dart';
+import 'package:watermeter/repository/preference.dart' as prefs;
+import 'package:watermeter/page/homepage/encouragement_word/encouragement_card.dart';
+import 'package:watermeter/controller/encourage_word_controller.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -43,6 +46,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     Get.put(ClassTableController());
+    Get.put(EncourageWordController());
     // Get.put(ExamController());
     // Get.put(ExperimentController());
     super.initState();
@@ -112,6 +116,20 @@ class _MainPageState extends State<MainPage> {
                 horizontal: 20,
                 vertical: 10,
               ),
+              background: prefs.getBool(prefs.Preference.showEncourageWord)
+                  ? Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 60),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            EncouragementCard(),
+                          ],
+                        ),
+                      ),
+                    )
+                  : null,
               title: GetBuilder<ClassTableController>(
                 builder: (c) => Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -197,20 +215,20 @@ class _MainPageState extends State<MainPage> {
                 const HeaderLocator(),
                 <Widget>[
                   const NoticeCard(),
-                  if (Platform.isLinux)
-                    Text(
-                      FlutterI18n.translate(
-                        context,
-                        "homepage.linux_notice",
-                      ),
-                    )
-                        .center()
-                        .constrained(height: 30)
-                        .paddingDirectional(
-                          horizontal: 16,
-                          vertical: 14,
-                        )
-                        .withHomeCardStyle(context),
+                  // if (Platform.isLinux)
+                  //   Text(
+                  //     FlutterI18n.translate(
+                  //       context,
+                  //       "homepage.linux_notice",
+                  //     ),
+                  //   )
+                  //       .center()
+                  //       .constrained(height: 30)
+                  //       .paddingDirectional(
+                  //         horizontal: 16,
+                  //         vertical: 14,
+                  //       )
+                  //       .withHomeCardStyle(context),
                   // if (prefs.getBool(prefs.Preference.role))
                   //   Text(
                   //     FlutterI18n.translate(

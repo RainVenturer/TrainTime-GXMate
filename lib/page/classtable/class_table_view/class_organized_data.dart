@@ -38,17 +38,17 @@ class ClassOrgainzedData {
     double transferIndex(int index, {bool isStart = false}) {
       late double toReturn;
       if (index <= 5) {
-        toReturn = index * 4;
+        toReturn = index * 3.8;
         if (isStart && index == 5) {
           toReturn += 3;
         }
       } else if (index <= 9) {
-        toReturn = index * 4 + 3;
+        toReturn = index * 3.8 + 3;
         if (isStart && index == 9) {
           toReturn += 3;
         }
       } else {
-        return index * 4 + 6;
+        return index * 3.8 + 6;
       }
       return toReturn;
     }

@@ -60,6 +60,7 @@ enum Preference {
     key: "simplifiedClassTimeline",
     type: "bool",
   ), // 简化日程时间轴
+  showEncourageWord(key: "showEncourageWord", type: "bool"), // 是否显示鼓励词
   localization(key: "localization", type: "String"); // 语言设置
   // schoolNetQueryPassword(
   //   key: "schoolNetQueryPassword",

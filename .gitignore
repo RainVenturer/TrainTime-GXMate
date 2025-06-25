@@ -57,3 +57,6 @@ app.*.map.json
 # Android key
 android/key.properties
 android/app/key.jks
+
+# old readme
+README.md.old

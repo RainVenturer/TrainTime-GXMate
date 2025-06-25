@@ -343,6 +343,7 @@ login:
     title: 請輸入驗證碼
     hint: 輸入驗證碼
     message_on_empty: 請輸入驗證碼
+    message_on_invalid: 請輸入正確的驗證碼
   slider_title: 服務器認證服務
 school_net:
   title: 校園網使用詳情
@@ -422,6 +423,11 @@ score:
       公共選修課已經修得學分：{not_core_credit}
 
       本程序提供的數據僅供參考，開發者對其準確性不負責'
+  score_analyze_card:
+    no_data: "暫無成績分析數據"
+    distribution_title: "班級成績分布"
+    course_rank: "課程排名：{rank}/{total}"
+    class_rank: "班級排名：{rank}/{total}"
   score_compose_card:
     no_detail: 未提供詳情信息
     fetching: 正在獲取
@@ -463,6 +469,9 @@ setting:
   color_setting: 顏色設置
   simplify_timeline: 簡化日程時間軸
   simplify_timeline_description: 沒有日程時 減少空間佔用
+  show_encourage_word: 顯示鼓勵詞
+  show_encourage_word_description: 是否在主頁顯示鼓勵詞
+  modify_encourage_word: 修改鼓勵詞
   account_setting: 賬號設置
   sport_password_setting: 體育系統密碼設置
   experiment_password_setting: 物理實驗系統密碼設置
@@ -541,6 +550,7 @@ setting:
     new_content: '版本號 {code} 新增內容：
 
       '
+    available_versions: "可用版本（請選擇適合您設備的版本）："
   localization_dialog:
     title: 修改語言
     undefined: 追隨系統設置

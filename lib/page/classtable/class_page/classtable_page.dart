@@ -10,8 +10,8 @@ import 'package:intl/intl.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:styled_widget/styled_widget.dart';
-// import 'package:watermeter/model/gxmu_ids/classtable.dart';
-// import 'package:watermeter/page/classtable/class_add/class_add_window.dart';
+import 'package:watermeter/model/gxmu_ids/classtable.dart';
+import 'package:watermeter/page/classtable/class_add/class_add_window.dart';
 import 'package:watermeter/page/classtable/class_page/empty_classtable_page.dart';
 import 'package:watermeter/page/classtable/class_table_view/class_table_view.dart';
 import 'package:watermeter/page/classtable/classtable_constant.dart';
@@ -50,21 +50,32 @@ class _ClassTablePageState extends State<ClassTablePage> {
   late ClassTableWidgetState classTableState;
 
   void _switchPage() {
+    // @ai: If the top row is locked, do not switch the page
+    if (isTopRowLocked) {
+      return;
+    }
     setState(() => isTopRowLocked = true);
-    Future.wait(
-      [
-        rowControl.animateToPage(
-          classTableState.chosenWeek,
-          curve: Curves.easeInOut,
-          duration: const Duration(milliseconds: changePageTime),
-        ),
-        pageControl.animateToPage(
-          classTableState.chosenWeek,
-          curve: Curves.easeInOutCubic,
-          duration: const Duration(milliseconds: changePageTime),
-        ),
-      ],
-    ).then((value) => isTopRowLocked = false);
+    Future.wait([
+      // @ai: Wait for the page to be switched
+      rowControl.animateToPage(
+        classTableState.chosenWeek,
+        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: changePageTime),
+      ),
+      pageControl.animateToPage(
+        classTableState.chosenWeek,
+        curve: Curves.easeInOutCubic,
+        duration: const Duration(milliseconds: changePageTime),
+      ),
+    ]).then((value) {
+      if (mounted) {
+        setState(() => isTopRowLocked = false);
+      }
+    }).catchError((_) {
+      if (mounted) {
+        setState(() => isTopRowLocked = false);
+      }
+    });
   }
 
   @override
@@ -306,13 +317,13 @@ class _ClassTablePageState extends State<ClassTablePage> {
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuItem<String>>[
                     if (!classTableState.isPartner) ...[
-                      // PopupMenuItem<String>(
-                      //   value: 'C',
-                      //   child: Text(FlutterI18n.translate(
-                      //     context,
-                      //     "classtable.popup_menu.add_class",
-                      //   )),
-                      // ),
+                      PopupMenuItem<String>(
+                        value: 'C',
+                        child: Text(FlutterI18n.translate(
+                          context,
+                          "classtable.popup_menu.add_class",
+                        )),
+                      ),
                       PopupMenuItem<String>(
                         value: 'D',
                         child: Text(FlutterI18n.translate(
@@ -361,30 +372,30 @@ class _ClassTablePageState extends State<ClassTablePage> {
                   onSelected: (String action) async {
                     final box = context.findRenderObject() as RenderBox?;
                     switch (action) {
-                      // case 'C':
-                      //   int semesterLength = ClassTableState.of(context)!
-                      //       .controllers
-                      //       .semesterLength;
-                      //   (ClassDetail, TimeArrangement)? data =
-                      //       await Navigator.of(context)
-                      //           .push<(ClassDetail, TimeArrangement)>(
-                      //     MaterialPageRoute(
-                      //       builder: (BuildContext context) {
-                      //         return ClassAddWindow(
-                      //           semesterLength: semesterLength,
-                      //         );
-                      //       },
-                      //     ),
-                      //   );
-                      //   if (context.mounted && data != null) {
-                      //     await ClassTableState.of(context)!
-                      //         .controllers
-                      //         .addUserDefinedClass(
-                      //           data.$1,
-                      //           data.$2,
-                      //         );
-                      //   }
-                      //   break;
+                      case 'C':
+                        int semesterLength = ClassTableState.of(context)!
+                            .controllers
+                            .semesterLength;
+                        (ClassDetail, TimeArrangement)? data =
+                            await Navigator.of(context)
+                                .push<(ClassDetail, TimeArrangement)>(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) {
+                              return ClassAddWindow(
+                                semesterLength: semesterLength,
+                              );
+                            },
+                          ),
+                        );
+                        if (context.mounted && data != null) {
+                          await ClassTableState.of(context)!
+                              .controllers
+                              .addUserDefinedClass(
+                                data.$1,
+                                data.$2,
+                              );
+                        }
+                        break;
                       case 'D':
                       case 'E':
                         try {

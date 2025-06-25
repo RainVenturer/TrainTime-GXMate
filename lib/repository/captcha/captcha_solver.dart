@@ -81,7 +81,7 @@ class DigitCaptchaClientProvider {
 
   static Future<String?> solve(BuildContext? context, List<int>? imageData,
       DigitCaptchaType? type, bool? lastTry,
-      {int retryCount = 5}) async {
+      {int retryCount = 10}) async {
     if (type != null && imageData != null && lastTry != null) {
       for (int i = 0; i < retryCount; i++) {
         int? result = await infer(type, imageData);
@@ -245,7 +245,7 @@ class _CaptchaInputDialogState extends State<CaptchaInputDialog> {
                         "login.captcha_window.message_on_empty",
                       ),
                     );
-                  } else if (_captchaController.text.length != 4) {
+                  } else if (!RegExp(r'^\d+$').hasMatch(_captchaController.text)) {
                     showToast(
                       context: context,
                       msg: FlutterI18n.translate(

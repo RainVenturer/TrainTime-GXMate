@@ -27,7 +27,7 @@ Dio get dioRelease => Dio()
 const url = "https://zamyang.cn/api";
 // GitHub API endpoint for releases
 const githubApiUrl =
-    "https://api.github.com/repos/RainVenturer/TrainTime-GXMate/releases/latest";
+    "https://api.github.com/repos/RainVenturer/traintime_pda_for_gxmu/releases/latest";
 
 final messageLock = Lock(reentrant: false);
 final updateLock = Lock(reentrant: false);
@@ -65,11 +65,11 @@ Future<void> checkMessage() => messageLock.synchronized(() async {
 Future<bool?> checkUpdate() => updateLock.synchronized<bool?>(() async {
       updateMessage.value = null;
       try {
-        final response = await dio.get(githubApiUrl);
-        final releaseData = response.data;
+        final response =
+            await dioRelease.get(githubApiUrl).then((value) => value.data);
 
         // Create UpdateMessage from GitHub release data
-        updateMessage.value = UpdateMessage.fromGitHubRelease(releaseData);
+        updateMessage.value = UpdateMessage.fromGitHubRelease(response);
 
         // Compare versions
         List<int> versionCode = updateMessage.value!.code

@@ -8,66 +8,37 @@ import 'package:styled_widget/styled_widget.dart';
 import 'package:watermeter/page/public_widget/public_widget.dart';
 import 'package:watermeter/page/public_widget/re_x_card.dart';
 import 'package:watermeter/model/gxmu_ids/score.dart';
+import 'package:watermeter/page/score/score_analyze_card.dart';
 
 class ScoreComposeCard extends Dialog {
   final Score score;
   final Future<List<ComposeDetail>> detail;
+  final Future<List<ComposeAnalyze>> analyze;
   const ScoreComposeCard({
     super.key,
     required this.score,
     required this.detail,
+    required this.analyze,
   });
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<ComposeDetail>>(
-      future: detail,
+    return FutureBuilder<List<dynamic>>(
+      future: Future.wait([detail, analyze]),
       builder: (context, snapshot) {
         late Widget info;
+        late Widget analyzeInfo;
+        
         if (snapshot.hasData) {
-          if (snapshot.data == null || snapshot.data!.isEmpty) {
-            info = InfoDetailBox(
-              child: Center(
-                child: Text(
-                  FlutterI18n.translate(
-                    context,
-                    "score.score_compose_card.no_detail",
-                  ),
-                ),
-              ),
-            );
-          } else {
-            TableRow scoreDetail(ComposeDetail i) {
-              return TableRow(
-                children: <Widget>[
-                  TableCell(
-                    child: Text(i.content),
-                  ),
-                  TableCell(
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(i.ratio),
-                    ),
-                  ),
-                  TableCell(
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(i.score),
-                    ),
-                  ),
-                ],
-              );
-            }
-
-            info = InfoDetailBox(
-              child: Table(
-                children: List<TableRow>.generate(
-                  snapshot.data!.length,
-                  (i) => scoreDetail(snapshot.data![i]),
-                ),
-              ),
-            );
-          }
+          final detailData = snapshot.data![0] as List<ComposeDetail>;
+          final analyzeData = snapshot.data![1] as List<ComposeAnalyze>;
+          
+          // Handle detail information
+          info = _buildDetailInfo(context, detailData);
+          
+          // Handle analyze information
+          analyzeInfo = _buildAnalyzeInfo(analyzeData);
+          
         } else if (snapshot.hasError) {
           info = InfoDetailBox(
             child: Center(
@@ -79,6 +50,7 @@ class ScoreComposeCard extends Dialog {
               ),
             ),
           );
+          analyzeInfo = const SizedBox.shrink();
         } else {
           info = InfoDetailBox(
             child: Center(
@@ -90,7 +62,9 @@ class ScoreComposeCard extends Dialog {
               ),
             ),
           );
+          analyzeInfo = const SizedBox.shrink();
         }
+        
         return ReXCard(
           title: Text(score.name),
           remaining: [ReXCardRemaining(score.semesterCode)],
@@ -119,9 +93,67 @@ class ScoreComposeCard extends Dialog {
             ),
             const SizedBox(height: 8),
             info,
+            const SizedBox(height: 8),
+            analyzeInfo,
           ].toColumn(crossAxisAlignment: CrossAxisAlignment.center),
         );
       },
     );
+  }
+
+  // Helper method to build detail information
+  Widget _buildDetailInfo(BuildContext context, List<ComposeDetail> detailData) {
+    if (detailData.isEmpty) {
+      return InfoDetailBox(
+        child: Center(
+          child: Text(
+            FlutterI18n.translate(
+              context,
+              "score.score_compose_card.no_detail",
+            ),
+          ),
+        ),
+      );
+    }
+
+    return InfoDetailBox(
+      child: Table(
+        children: List<TableRow>.generate(
+          detailData.length,
+          (i) => _buildScoreDetailRow(detailData[i]),
+        ),
+      ),
+    );
+  }
+
+  // Helper method to build a single score detail row
+  TableRow _buildScoreDetailRow(ComposeDetail detail) {
+    return TableRow(
+      children: <Widget>[
+        TableCell(
+          child: Text(detail.content),
+        ),
+        TableCell(
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Text(detail.ratio),
+          ),
+        ),
+        TableCell(
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Text(detail.score),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Helper method to build analyze information
+  Widget _buildAnalyzeInfo(List<ComposeAnalyze> analyzeData) {
+    if (analyzeData.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    return ScoreAnalyzeCard(analyzeData: analyzeData);
   }
 }
