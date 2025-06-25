@@ -5,6 +5,7 @@
 // From https://blog.csdn.net/zl18603543572/article/details/125757856
 
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 class MarqueeWidget extends StatefulWidget {
@@ -25,19 +26,29 @@ class MarqueeWidget extends StatefulWidget {
 class _MarqueeWidgetState extends State<MarqueeWidget> {
   late PageController _controller;
   late Timer _timer;
+  late List<int> _randomOrder;
+  final _random = Random();
+  int _currentIndex = 0;
+
+  void _generateRandomOrder() {
+    _randomOrder = List.generate(widget.itemCount, (index) => index);
+    _randomOrder.shuffle(_random);
+  }
 
   @override
   void initState() {
     super.initState();
-    _controller = PageController();
+    _generateRandomOrder();
+    _currentIndex = _random.nextInt(widget.itemCount);
+    _controller = PageController(initialPage: _currentIndex);
+    
     _timer = Timer.periodic(
       Duration(seconds: widget.loopSeconds),
       (timer) {
         if (_controller.page != null) {
-          if (_controller.page!.round() >= widget.itemCount) {
-            _controller.jumpToPage(0);
-          }
-          _controller.nextPage(
+          _currentIndex = (_currentIndex + 1) % widget.itemCount;
+          _controller.animateToPage(
+            _currentIndex,
             duration: const Duration(milliseconds: 500),
             curve: Curves.linear,
           );
@@ -53,13 +64,10 @@ class _MarqueeWidgetState extends State<MarqueeWidget> {
       scrollDirection: Axis.vertical,
       controller: _controller,
       itemBuilder: (buildContext, index) {
-        if (index < widget.itemCount) {
-          return widget.itemBuilder(buildContext, index);
-        } else {
-          return widget.itemBuilder(buildContext, 0);
-        }
+        final actualIndex = _randomOrder[index % widget.itemCount];
+        return widget.itemBuilder(buildContext, actualIndex);
       },
-      itemCount: widget.itemCount + 1,
+      itemCount: widget.itemCount,
     );
   }
 
