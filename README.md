@@ -2,33 +2,25 @@
 <img src="./assets/icon.png" style="border-radius:10px; margin:10px; width:120px" alt="TrainTime PDA">
 <h1>Traintime PDA</h1>
 
-[![Release downloads](https://img.shields.io/github/downloads/BenderBlog/traintime_pda/total.svg)](https://GitHub.com/BenderBlog/traintime_pda/releases/) ![Android Version](https://img.shields.io/badge/Android%20API-23%2B-green)
+<p align="center">
+  <img src="https://img.shields.io/github/stars/RainVenturer/traintime_pda_for_gxmu" alt="Stars">&nbsp;
+  <img src="https://img.shields.io/github/downloads/RainVenturer/traintime_pda_for_gxmu/total" alt="Downloads">&nbsp;
+  <img src="https://img.shields.io/github/v/release/RainVenturer/traintime_pda_for_gxmu" alt="Version">&nbsp;
+  <img src="https://img.shields.io/github/last-commit/RainVenturer/traintime_pda_for_gxmu" alt="Last Commit">&nbsp;
+  <img src="https://img.shields.io/github/repo-size/RainVenturer/traintime_pda_for_gxmu" alt="Repo Size">
+</p>
 
-Traintime PDA，又称 XDYou，是为西电学生设计的开源信息查询软件。
+Traintime PDA，是为广西医科大学学生设计的开源信息查询软件，基于[Traintime PDA](https://github.com/BenderBlog/traintime_pda)项目修改。
 
-[临时主页地址](https://legacy.superbart.top/xdyou.html) 
 </div>
-
-[<img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
-    alt="Get it on App Store"
-    height="80">](https://apps.apple.com/us/app/xdyou/id6461723688?l=zh-Hans-CN)[<img src="https://raw.githubusercontent.com/f-droid/artwork/master/badge/get-it-on-zh-cn.svg"
-    alt="Get it on F-Droid"
-    height="80">](https://f-droid.org/zh_Hans/packages/io.github.rainventurer.traintime_GXMate/)
 
 ## 特性概览
 
-1. 支持查看本科生和研究生的课程信息，成绩信息，考试信息。
-2. 查看日程表：包括课程信息，考试信息。
-3. 查看体育信息。
-4. 查看宿舍电量。
-5. 查看成绩，包括可以自行选择科目计算均分。
-6. 考试安排查询。
-7. 查询空闲教室。
-8. 图书馆信息查询：个人借书状况和学校书库状况。
-9. 校园卡流水查询以及直接扣除校园卡余额的付款码。
-10. 其他小功能：请假，报修之类。
-11. Android 和 iOS 特有的日程查看桌面小部件。
-12. 完备的国际化支持：支持繁体中文和英语。
+1. 支持查看本科生和研究生的课程信息，成绩信息。
+2. 查看日程表：包括课程信息。
+3. 查看成绩，包括可以自行选择科目计算均分。
+4.  Android 和 iOS 特有的日程查看桌面小部件。
+5.  完备的国际化支持：支持繁体中文和英语。
 
 ## 其他特性
 
