@@ -524,6 +524,8 @@ setting:
    electricity_account_setting: "Electricity account setting"
    schoolnet_password_setting: "Campus net password"
    schoolnet_password_description: "If you have not setted it, you cannot query it."
+   schoolcard_password_setting: "Campus card password"
+   schoolcard_password_description: "Please set if not ID number last 6 digits"
    # 课表相关设置
    classtable_setting: "Class Schedule Related"
    background: "Background image"

@@ -19,7 +19,7 @@ import 'package:watermeter/controller/classtable_controller.dart';
 import 'package:watermeter/page/homepage/info_widget/classtable_card.dart';
 // import 'package:watermeter/page/homepage/info_widget/electricity_card.dart';
 // import 'package:watermeter/page/homepage/info_widget/library_card.dart';
-// import 'package:watermeter/page/homepage/info_widget/school_card_info_card.dart';
+import 'package:watermeter/page/homepage/info_widget/school_card_info_card.dart';
 import 'package:watermeter/page/homepage/notice_card/notice_card.dart';
 import 'package:watermeter/page/homepage/refresh.dart';
 // import 'package:watermeter/page/homepage/toolbox/empty_classroom_card.dart';
@@ -52,12 +52,12 @@ class _MainPageState extends State<MainPage> {
     super.initState();
   }
 
-  // final List<Widget> children = const [
-  //   ElectricityCard(),
-  //   LibraryCard(),
-  //   SchoolCardInfoCard(),
-  //   SchoolnetCard(),
-  // ];
+  final List<Widget> children = const [
+    // ElectricityCard(),
+    // LibraryCard(),
+    SchoolCardInfoCard(),
+    // SchoolnetCard(),
+  ];
 
   final List<Widget> smallFunction = [
     const ScoreCard(),
@@ -244,7 +244,7 @@ class _MainPageState extends State<MainPage> {
                   //       )
                   //       .withHomeCardStyle(context),
                   const ClassTableCard(),
-                  // ...children,
+                  ...children,
                   GridView.extent(
                     maxCrossAxisExtent: 96,
                     shrinkWrap: true,

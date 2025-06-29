@@ -480,6 +480,8 @@ setting:
   electricity_account_setting: 電費賬號設置
   schoolnet_password_setting: 校園網帳號密碼設置
   schoolnet_password_description: 不設置查看不了網費
+  schoolcard_password_setting: 校園卡密碼設置
+  schoolcard_password_description: 非 身份證后六位 請設置
   classtable_setting: 課表相關設置
   background: 開啟課表背景圖
   no_background: 你先選個圖片罷，就在下面

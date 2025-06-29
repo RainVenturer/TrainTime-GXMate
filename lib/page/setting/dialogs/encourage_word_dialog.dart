@@ -11,6 +11,24 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:get/get.dart';
 import 'package:watermeter/controller/encourage_word_controller.dart';
 
+/// Constants for styling and dimensions
+class _DialogConstants {
+  static const double itemHeight = 48.0;
+  static const double iconSize = 20.0;
+  static const double fontSize = 15.0;
+  static const double verticalSpacing = 15.0;
+  static const double verticalContentPadding = 8.0;
+  
+  static const EdgeInsets itemMargin = EdgeInsets.symmetric(vertical: 2, horizontal: 0);
+  static const EdgeInsets listPadding = EdgeInsets.symmetric(vertical: 4);
+  
+  static const BoxConstraints buttonConstraints = BoxConstraints(
+    minWidth: 32,
+    minHeight: 32,
+  );
+}
+
+/// A dialog for editing encourage words with inline editing capabilities
 class EditEncourageWordDialog extends StatefulWidget {
   const EditEncourageWordDialog({super.key});
 
@@ -20,10 +38,11 @@ class EditEncourageWordDialog extends StatefulWidget {
 
 class _EditEncourageWordDialogState extends State<EditEncourageWordDialog> {
   final TextEditingController _newWordController = TextEditingController();
+  final TextEditingController _editingController = TextEditingController();
   final EncourageWordController _controller = Get.find<EncourageWordController>();
+  
   late List<String> _words;
   int? _editingIndex;
-  final TextEditingController _editingController = TextEditingController();
 
   @override
   void initState() {
@@ -31,10 +50,18 @@ class _EditEncourageWordDialogState extends State<EditEncourageWordDialog> {
     _words = List<String>.from(_controller.encourageWord.words);
   }
 
+  @override
+  void dispose() {
+    _newWordController.dispose();
+    _editingController.dispose();
+    super.dispose();
+  }
+
   void _addWord() {
-    if (_newWordController.text.trim().isNotEmpty) {
+    final word = _newWordController.text.trim();
+    if (word.isNotEmpty) {
       setState(() {
-        _words.add(_newWordController.text.trim());
+        _words.add(word);
         _newWordController.clear();
       });
     }
@@ -57,9 +84,10 @@ class _EditEncourageWordDialogState extends State<EditEncourageWordDialog> {
   }
 
   void _saveEditing(int index) {
-    if (_editingController.text.trim().isNotEmpty) {
+    final word = _editingController.text.trim();
+    if (word.isNotEmpty) {
       setState(() {
-        _words[index] = _editingController.text.trim();
+        _words[index] = word;
         _editingIndex = null;
       });
     }
@@ -75,11 +103,14 @@ class _EditEncourageWordDialogState extends State<EditEncourageWordDialog> {
     await _controller.editEncourageWords(_words);
   }
 
-  @override
-  void dispose() {
-    _newWordController.dispose();
-    _editingController.dispose();
-    super.dispose();
+  void _handleReorder(int oldIndex, int newIndex) {
+    setState(() {
+      if (newIndex > oldIndex) {
+        newIndex -= 1;
+      }
+      final item = _words.removeAt(oldIndex);
+      _words.insert(newIndex, item);
+    });
   }
 
   @override
@@ -92,166 +123,211 @@ class _EditEncourageWordDialogState extends State<EditEncourageWordDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Flexible(
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.4,
-                child: ReorderableListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  buildDefaultDragHandles: false,
-                  itemCount: _words.length,
-                  proxyDecorator: (child, index, animation) => Material(
-                    elevation: 2,
-                    color: Colors.transparent,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor.withAlpha(230),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: child,
-                      ),
-                    ),
-                  ),
-                  onReorder: (oldIndex, newIndex) {
-                    setState(() {
-                      if (newIndex > oldIndex) {
-                        newIndex -= 1;
-                      }
-                      final item = _words.removeAt(oldIndex);
-                      _words.insert(newIndex, item);
-                    });
-                  },
-                  itemBuilder: (context, index) {
-                    return SizedBox(
-                      key: ValueKey('${index}_${_words[index]}_${TimeOfDay.now()}'),
-                      height: 48,
-                      child: Card(
-                        margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
-                        child: ListTile(
-                          dense: true,
-                          visualDensity: VisualDensity.compact,
-                          leading: ReorderableDragStartListener(
-                            index: index,
-                            child: const Icon(Icons.drag_handle, size: 20),
-                          ),
-                          title: _editingIndex == index
-                              ? TextField(
-                                  controller: _editingController,
-                                  autofocus: true,
-                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.0,
-                                  ),
-                                  onSubmitted: (_) => _saveEditing(index),
-                                  decoration: const InputDecoration(
-                                    isDense: true,
-                                    contentPadding: EdgeInsets.symmetric(vertical: 8),
-                                    border: InputBorder.none,
-                                  ),
-                                )
-                              : Text(
-                                  _words[index],
-                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.0,
-                                  ),
-                                ),
-                          onTap: _editingIndex == null ? () => _startEditing(index) : null,
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              if (_editingIndex == index) ...[
-                                IconButton(
-                                  icon: const Icon(Icons.check, size: 20),
-                                  onPressed: () => _saveEditing(index),
-                                  tooltip: FlutterI18n.translate(context, "save"),
-                                  visualDensity: VisualDensity.compact,
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(
-                                    minWidth: 32,
-                                    minHeight: 32,
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.close, size: 20),
-                                  onPressed: _cancelEditing,
-                                  tooltip: FlutterI18n.translate(context, "cancel"),
-                                  visualDensity: VisualDensity.compact,
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(
-                                    minWidth: 32,
-                                    minHeight: 32,
-                                  ),
-                                ),
-                              ] else
-                                IconButton(
-                                  icon: const Icon(Icons.delete_outline, size: 20),
-                                  onPressed: () => _deleteWord(index),
-                                  tooltip: FlutterI18n.translate(context, "delete"),
-                                  visualDensity: VisualDensity.compact,
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(
-                                    minWidth: 32,
-                                    minHeight: 32,
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+              child: _buildWordList(context),
             ),
-            const SizedBox(height: 15),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _newWordController,
-                    // decoration: InputDecoration(
-                    //   hintText: FlutterI18n.translate(
-                    //     context,
-                    //     "setting.new_encourage_word",
-                    //   ),
-                    //   border: const OutlineInputBorder(),
-                    // ),
-                    onSubmitted: (_) => _addWord(),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                IconButton.filled(
-                  icon: const Icon(Icons.add),
-                  onPressed: _addWord,
-                  tooltip: FlutterI18n.translate(
-                    context,
-                    "setting.add_encourage_word",
-                  ),
-                ),
-              ],
-            ),
+            const SizedBox(height: _DialogConstants.verticalSpacing),
+            _buildAddWordRow(context),
           ],
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(FlutterI18n.translate(context, "cancel")),
+      actions: _buildDialogActions(context),
+    );
+  }
+
+  Widget _buildWordList(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.4,
+      child: ReorderableListView.builder(
+        padding: _DialogConstants.listPadding,
+        buildDefaultDragHandles: false,
+        itemCount: _words.length,
+        proxyDecorator: (child, index, animation) => _buildDraggedItem(context, child),
+        onReorder: _handleReorder,
+        itemBuilder: (context, index) => EncourageWordItem(
+          key: ValueKey('${index}_${_words[index]}_${TimeOfDay.now()}'),
+          word: _words[index],
+          index: index,
+          isEditing: _editingIndex == index,
+          editingController: _editingController,
+          onStartEditing: _startEditing,
+          onSaveEditing: _saveEditing,
+          onCancelEditing: _cancelEditing,
+          onDelete: _deleteWord,
         ),
-        FilledButton(
-          onPressed: () async {
-            final navigator = Navigator.of(context);
-            await _saveWords();
-            if (mounted) {
-              navigator.pop();
-            }
-          },
-          child: Text(FlutterI18n.translate(context, "save")),
+      ),
+    );
+  }
+
+  Widget _buildDraggedItem(BuildContext context, Widget child) {
+    return Material(
+      elevation: 2,
+      color: Colors.transparent,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.7,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).cardColor.withAlpha(230),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: child,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAddWordRow(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            controller: _newWordController,
+            onSubmitted: (_) => _addWord(),
+          ),
+        ),
+        const SizedBox(width: 8),
+        IconButton.filled(
+          icon: const Icon(Icons.add),
+          onPressed: _addWord,
+          tooltip: FlutterI18n.translate(context, "setting.add_encourage_word"),
         ),
       ],
+    );
+  }
+
+  List<Widget> _buildDialogActions(BuildContext context) {
+    return [
+      TextButton(
+        onPressed: () => Navigator.of(context).pop(),
+        child: Text(FlutterI18n.translate(context, "cancel")),
+      ),
+      FilledButton(
+        onPressed: () async {
+          final navigator = Navigator.of(context);
+          await _saveWords();
+          if (mounted) {
+            navigator.pop();
+          }
+        },
+        child: Text(FlutterI18n.translate(context, "save")),
+      ),
+    ];
+  }
+}
+
+/// A list item widget for displaying and editing an encourage word
+class EncourageWordItem extends StatelessWidget {
+  final String word;
+  final int index;
+  final bool isEditing;
+  final TextEditingController editingController;
+  final void Function(int) onStartEditing;
+  final void Function(int) onSaveEditing;
+  final VoidCallback onCancelEditing;
+  final void Function(int) onDelete;
+
+  const EncourageWordItem({
+    super.key,
+    required this.word,
+    required this.index,
+    required this.isEditing,
+    required this.editingController,
+    required this.onStartEditing,
+    required this.onSaveEditing,
+    required this.onCancelEditing,
+    required this.onDelete,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: _DialogConstants.itemHeight,
+      child: Card(
+        margin: _DialogConstants.itemMargin,
+        child: ListTile(
+          dense: true,
+          visualDensity: VisualDensity.compact,
+          leading: ReorderableDragStartListener(
+            index: index,
+            child: const Icon(
+              Icons.drag_handle,
+              size: _DialogConstants.iconSize,
+            ),
+          ),
+          title: _buildTitle(context),
+          onTap: !isEditing ? () => onStartEditing(index) : null,
+          trailing: _buildTrailingButtons(context),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTitle(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(
+      fontSize: _DialogConstants.fontSize,
+      fontWeight: FontWeight.w500,
+      height: 1.0,
+    );
+
+    if (isEditing) {
+      return TextField(
+        controller: editingController,
+        autofocus: true,
+        style: textStyle,
+        onSubmitted: (_) => onSaveEditing(index),
+        decoration: const InputDecoration(
+          isDense: true,
+          contentPadding: EdgeInsets.symmetric(
+            vertical: _DialogConstants.verticalContentPadding,
+          ),
+          border: InputBorder.none,
+        ),
+      );
+    }
+
+    return Text(word, style: textStyle);
+  }
+
+  Widget _buildTrailingButtons(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (isEditing) ...[
+          _buildIconButton(
+            context: context,
+            icon: Icons.check,
+            tooltip: "save",
+            onPressed: () => onSaveEditing(index),
+          ),
+          _buildIconButton(
+            context: context,
+            icon: Icons.close,
+            tooltip: "cancel",
+            onPressed: onCancelEditing,
+          ),
+        ] else
+          _buildIconButton(
+            context: context,
+            icon: Icons.delete_outline,
+            tooltip: "delete",
+            onPressed: () => onDelete(index),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildIconButton({
+    required BuildContext context,
+    required IconData icon,
+    required String tooltip,
+    required VoidCallback onPressed,
+  }) {
+    return IconButton(
+      icon: Icon(icon, size: _DialogConstants.iconSize),
+      onPressed: onPressed,
+      tooltip: FlutterI18n.translate(context, tooltip),
+      visualDensity: VisualDensity.compact,
+      padding: EdgeInsets.zero,
+      constraints: _DialogConstants.buttonConstraints,
     );
   }
 }

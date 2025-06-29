@@ -27,7 +27,7 @@ Dio get dioRelease => Dio()
 const url = "https://zamyang.cn/api";
 // GitHub API endpoint for releases
 const githubApiUrl =
-    "https://api.github.com/repos/RainVenturer/traintime_pda_for_gxmu/releases/latest";
+    "https://api.github.com/repos/RainVenturer/TrainTime-GXMate/releases/latest";
 
 final messageLock = Lock(reentrant: false);
 final updateLock = Lock(reentrant: false);

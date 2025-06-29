@@ -21,7 +21,7 @@ import 'package:watermeter/repository/preference.dart' as preference;
 import 'package:watermeter/page/homepage/home.dart';
 import 'package:watermeter/repository/gxmu_ids/jwxt_session.dart';
 import 'package:watermeter/page/login/bottom_buttons.dart';
-// import 'package:watermeter/repository/gxmu_ids/personal_info_session.dart';
+import 'package:watermeter/repository/gxmu_ids/personal_info_session.dart';
 
 class LoginWindow extends StatefulWidget {
   const LoginWindow({super.key});
@@ -155,8 +155,10 @@ class _LoginWindowState extends State<LoginWindow> {
           msg: FlutterI18n.translate(context, status),
           value: number,
         ),
-        codeCaptcha: (List<int> imageData, DigitCaptchaType type, bool lastTry) {
-          return DigitCaptchaClientProvider.solve(context, imageData, type, lastTry);
+        codeCaptcha:
+            (List<int> imageData, DigitCaptchaType type, bool lastTry) {
+          return DigitCaptchaClientProvider.solve(
+              context, imageData, type, lastTry);
         },
       );
       if (!mounted) return;
@@ -176,6 +178,7 @@ class _LoginWindowState extends State<LoginWindow> {
         // } else {
         //   await PersonalInfoSession().getInformationEhall();
         // }
+        await PersonalInfoSession().getInformationEhall();
 
         if (mounted) {
           if (pd.isOpen()) pd.close();

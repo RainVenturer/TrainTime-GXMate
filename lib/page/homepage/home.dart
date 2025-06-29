@@ -31,6 +31,7 @@ import 'package:watermeter/repository/gxmu_ids/jws_session.dart';
 import 'package:watermeter/repository/captcha/captcha_solver.dart';
 import 'package:ming_cute_icons/ming_cute_icons.dart';
 import 'package:watermeter/repository/preference.dart' as preference;
+import 'package:watermeter/repository/gxmu_hwpt/hwpt_provider.dart';
 
 class PageInformation {
   final int index;
@@ -391,6 +392,11 @@ class _HomePageMasterState extends State<HomePageMaster>
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!refreshAtStart) {
+      // 初始化 HwptProvider
+      if (!Get.isRegistered<HwptProvider>()) {
+        Get.put(HwptProvider(), permanent: true);
+      }
+      
       message.checkMessage();
       message.checkUpdate().then((value) {
         if (value ?? false) _showUpdateNotice();

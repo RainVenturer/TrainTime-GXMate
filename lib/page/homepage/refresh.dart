@@ -10,16 +10,18 @@ import 'package:watermeter/repository/logger.dart';
 import 'package:get/get.dart';
 import 'package:watermeter/controller/classtable_controller.dart';
 // import 'package:watermeter/controller/exam_controller.dart';
-// import 'package:watermeter/repository/gxmu_ids/school_card_session.dart'
-//     as school_card_session;
+import 'package:watermeter/repository/gxmu_hwpt/school_card_session.dart'
+    as school_card_session;
 import 'package:watermeter/repository/message_session.dart' as message;
 // import 'package:watermeter/repository/gxmu_ids/library_session.dart'
 // as borrow_info;
 // import 'package:watermeter/repository/gxmu_ids/electricity_session.dart'
 //     as electricity;
 import 'package:watermeter/repository/gxmu_ids/jws_session.dart';
+import 'package:watermeter/repository/gxmu_hwpt/hws_session.dart';
 import 'package:watermeter/repository/captcha/captcha_solver.dart';
 // import 'package:watermeter/repository/schoolnet_session.dart' as school_net;
+import 'package:watermeter/repository/gxmu_hwpt/hwpt_provider.dart';
 
 DateTime updateTime = DateTime.now();
 
@@ -42,10 +44,12 @@ Future<void> _comboLogin({
       codeCaptcha,
 }) async {
   // Guard
-  if (loginState == JWSLoginState.requesting) {
+  if (loginState == JWSLoginState.requesting ||
+      loginStateHWPT == HWPTLoginState.requesting) {
     return;
   }
   loginState = JWSLoginState.requesting;
+  loginStateHWPT = HWPTLoginState.requesting;
 
   try {
     await JWSSession().checkAndLogin(
@@ -55,17 +59,42 @@ Future<void> _comboLogin({
     loginState = JWSLoginState.success;
   } on PasswordWrongException {
     loginState = JWSLoginState.passwordWrong;
-
     log.warning(
       "[_comboLogin] "
-      "Combo login failed! Because your password is wrong.",
+      "Combo login JWXT failed! Because your password is wrong.",
     );
   } catch (e, s) {
     loginState = JWSLoginState.fail;
-
     log.warning(
       "[_comboLogin] "
-      "Combo login failed! Because of the following error: "
+      "Combo login JWXT failed! Because of the following error: "
+      "$e\nThe stack of the error is: \n$s",
+    );
+  }
+
+  final hwptProvider = Get.find<HwptProvider>();
+  
+  try {
+    await HWSSession().checkAndLogin(
+      target: "https://hwpt.gxmu.edu.cn",
+    );
+    loginStateHWPT = HWPTLoginState.success;
+    await hwptProvider.updateUserData(isForce: true);
+  } on PasswordWrongException {
+    loginStateHWPT = HWPTLoginState.passwordWrong;
+    hwptProvider.state.value = HwptState.error;
+    hwptProvider.error = "Password wrong";
+    log.warning(
+      "[_comboLogin] "
+      "Combo login HWPT failed! Because your password is wrong.",
+    );
+  } catch (e, s) {
+    loginStateHWPT = HWPTLoginState.fail;
+    hwptProvider.state.value = HwptState.error;
+    hwptProvider.error = e.toString();
+    log.warning(
+      "[_comboLogin] "
+      "Combo login HWPT failed! Because of the following error: "
       "$e\nThe stack of the error is: \n$s",
     );
   }
@@ -80,8 +109,13 @@ Future<void> update({
   // Update data
   message.checkMessage();
 
+  final hwptProvider = Get.find<HwptProvider>();
+  
   // Retry Login
-  if (forceRetryLogin || loginState == JWSLoginState.fail) {
+  if (forceRetryLogin ||
+      loginState == JWSLoginState.fail ||
+      loginStateHWPT == HWPTLoginState.fail ||
+      hwptProvider.state.value == HwptState.error) {
     await _comboLogin(codeCaptcha: codeCaptcha);
   }
 
@@ -95,12 +129,20 @@ Future<void> update({
         final c = Get.put(ClassTableController());
         await c.updateClassTable();
       }),
+      Future(() async {
+        if (hwptProvider.state.value == HwptState.none) {
+          await hwptProvider.initializeData();
+        }
+        if (hwptProvider.state.value != HwptState.error) {
+          await hwptProvider.updateUserData();
+        }
+      }),
       // Future(() async {
       //   final c = Get.put(ExperimentController());
       //   await c.get();
       // }),
       // Future(() => borrow_info.LibrarySession().getBorrowList()),
-      // Future(() => school_card_session.SchoolCardSession().initSession()),
+      Future(() => school_card_session.SchoolCardSession().initSession()),
       // Future(() => electricity.update()),
       // Future(() => school_net.update())
     ]).then((value) => updateCurrentData()).onError((error, stackTrace) {

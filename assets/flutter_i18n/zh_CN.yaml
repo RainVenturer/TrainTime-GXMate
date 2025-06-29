@@ -512,6 +512,8 @@ setting:
     electricity_account_setting: "电费账号设置"
     schoolnet_password_setting: "校园网帐号密码设置"
     schoolnet_password_description: "不设置查看不了网费"
+    schoolcard_password_setting: "校园卡密码设置"
+    schoolcard_password_description: "非 身份证后六位 请设置"
     # 课表相关设置
     classtable_setting: "课表相关设置"
     background: "开启课表背景图"

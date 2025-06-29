@@ -38,12 +38,13 @@ import 'package:watermeter/repository/preference.dart' as preference;
 // import 'package:watermeter/page/setting/dialogs/electricity_password_dialog.dart';
 // import 'package:watermeter/page/setting/dialogs/sport_password_dialog.dart';
 import 'package:watermeter/page/setting/dialogs/change_swift_dialog.dart';
+import 'package:watermeter/page/setting/dialogs/school_card_password_dialog.dart';
+import 'package:watermeter/page/setting/dialogs/encourage_word_dialog.dart';
 import 'package:watermeter/repository/network_session.dart';
 import 'package:watermeter/repository/gxmu_ids/classtable_session.dart';
 // import 'package:watermeter/repository/gxmu_ids/electricity_session.dart';
 // import 'package:watermeter/repository/gxmu_ids/score_session.dart';
 import 'package:watermeter/themes/color_seed.dart';
-import 'package:watermeter/page/setting/dialogs/encourage_word_dialog.dart';
 
 class SettingWindow extends StatefulWidget {
   const SettingWindow({super.key});
@@ -353,11 +354,15 @@ class _SettingWindowState extends State<SettingWindow> {
                     },
                   ),
                 ),
-                ClipRect( // @ai 添加一个动画效果
+                ClipRect(
+                  // @ai 添加一个动画效果
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     curve: Curves.easeInOut,
-                    height: preference.getBool(preference.Preference.showEncourageWord) ? 73.0 : 0.0,
+                    height: preference
+                            .getBool(preference.Preference.showEncourageWord)
+                        ? 73.0
+                        : 0.0,
                     child: SingleChildScrollView(
                       physics: const NeverScrollableScrollPhysics(),
                       child: Column(
@@ -367,113 +372,113 @@ class _SettingWindowState extends State<SettingWindow> {
                           ListTile(
                               title: Text(FlutterI18n.translate(
                                 context,
-                              "setting.modify_encourage_word",
-                            )),
-                            trailing: const Icon(Icons.navigate_next),
-                            onTap: () {
-                              showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (context) =>
-                                    const EditEncourageWordDialog(),
-                              );
-                            }),
+                                "setting.modify_encourage_word",
+                              )),
+                              trailing: const Icon(Icons.navigate_next),
+                              onTap: () {
+                                showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (context) =>
+                                      const EditEncourageWordDialog(),
+                                );
+                              }),
                         ],
                       ),
                     ),
                   ),
                 )
               ])),
-          // ReXCard(
-          //   title: _buildListSubtitle(FlutterI18n.translate(
-          //     context,
-          //     "setting.account_setting",
-          //   )),
-          //   remaining: const [],
-          //   bottomRow: Column(
-          //     children: [
-          //       if (!preference.getBool(preference.Preference.role)) ...[
-          //         ListTile(
-          //             title: Text(FlutterI18n.translate(
-          //               context,
-          //               "setting.sport_password_setting",
-          //             )),
-          //             trailing: const Icon(Icons.navigate_next),
-          //             onTap: () {
-          //               showDialog(
-          //                 barrierDismissible: false,
-          //                 context: context,
-          //                 builder: (context) => const SportPasswordDialog(),
-          //               );
-          //             }),
-          //         const Divider(),
-          //         ListTile(
-          //             title: Text(FlutterI18n.translate(
-          //               context,
-          //               "setting.experiment_password_setting",
-          //             )),
-          //             trailing: const Icon(Icons.navigate_next),
-          //             onTap: () {
-          //               showDialog(
-          //                 barrierDismissible: false,
-          //                 context: context,
-          //                 builder: (context) =>
-          //                     const ExperimentPasswordDialog(),
-          //               );
-          //             }),
-          //       ] else ...[
-          //         ListTile(
-          //             title: Text(FlutterI18n.translate(
-          //               context,
-          //               "setting.electricity_account_setting",
-          //             )),
-          //             trailing: const Icon(Icons.navigate_next),
-          //             onTap: () {
-          //               showDialog(
-          //                 barrierDismissible: false,
-          //                 context: context,
-          //                 builder: (context) => ElectricityAccountDialog(),
-          //               );
-          //             }),
-          //       ],
-          //       const Divider(),
-          //       ListTile(
-          //           title: Text(FlutterI18n.translate(
-          //             context,
-          //             "setting.electricity_password_setting",
-          //           )),
-          //           subtitle: Text(FlutterI18n.translate(
-          //             context,
-          //             "setting.electricity_password_description",
-          //           )),
-          //           trailing: const Icon(Icons.navigate_next),
-          //           onTap: () {
-          //             showDialog(
-          //               context: context,
-          //               barrierDismissible: false,
-          //               builder: (context) => const ElectricityPasswordDialog(),
-          //             );
-          //           }),
-          //       const Divider(),
-          //       ListTile(
-          //           title: Text(FlutterI18n.translate(
-          //             context,
-          //             "setting.schoolnet_password_setting",
-          //           )),
-          //           subtitle: Text(FlutterI18n.translate(
-          //             context,
-          //             "setting.schoolnet_password_description",
-          //           )),
-          //           trailing: const Icon(Icons.navigate_next),
-          //           onTap: () {
-          //             showDialog(
-          //               context: context,
-          //               builder: (context) => const SchoolNetPasswordDialog(),
-          //             );
-          //           }),
-          //     ],
-          //   ),
-          // ),
+          ReXCard(
+            title: _buildListSubtitle(FlutterI18n.translate(
+              context,
+              "setting.account_setting",
+            )),
+            remaining: const [],
+            bottomRow: Column(
+              children: [
+                // if (!preference.getBool(preference.Preference.role)) ...[
+                //   ListTile(
+                //       title: Text(FlutterI18n.translate(
+                //         context,
+                //         "setting.sport_password_setting",
+                //       )),
+                //       trailing: const Icon(Icons.navigate_next),
+                //       onTap: () {
+                //         showDialog(
+                //           barrierDismissible: false,
+                //           context: context,
+                //           builder: (context) => const SportPasswordDialog(),
+                //         );
+                //       }),
+                //   const Divider(),
+                //   ListTile(
+                //       title: Text(FlutterI18n.translate(
+                //         context,
+                //         "setting.experiment_password_setting",
+                //       )),
+                //       trailing: const Icon(Icons.navigate_next),
+                //       onTap: () {
+                //         showDialog(
+                //           barrierDismissible: false,
+                //           context: context,
+                //           builder: (context) =>
+                //               const ExperimentPasswordDialog(),
+                //         );
+                //       }),
+                // ] else ...[
+                //   ListTile(
+                //       title: Text(FlutterI18n.translate(
+                //         context,
+                //         "setting.electricity_account_setting",
+                //       )),
+                //       trailing: const Icon(Icons.navigate_next),
+                //       onTap: () {
+                //         showDialog(
+                //           barrierDismissible: false,
+                //           context: context,
+                //           builder: (context) => ElectricityAccountDialog(),
+                //         );
+                //       }),
+                // ],
+                // const Divider(),
+                ListTile(
+                    title: Text(FlutterI18n.translate(
+                      context,
+                      "setting.schoolcard_password_setting",
+                    )),
+                    subtitle: Text(FlutterI18n.translate(
+                      context,
+                      "setting.schoolcard_password_description",
+                    )),
+                    trailing: const Icon(Icons.navigate_next),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) => const SchoolCardPasswordDialog(),
+                      );
+                    }),
+                // const Divider(),
+                // ListTile(
+                //     title: Text(FlutterI18n.translate(
+                //       context,
+                //       "setting.schoolnet_password_setting",
+                //     )),
+                //     subtitle: Text(FlutterI18n.translate(
+                //       context,
+                //       "setting.schoolnet_password_description",
+                //     )),
+                //     trailing: const Icon(Icons.navigate_next),
+                //     onTap: () {
+                //       showDialog(
+                //         context: context,
+                //         builder: (context) => const SchoolNetPasswordDialog(),
+                //       );
+                //     }),
+              ],
+            ),
+          ),
           ReXCard(
             title: _buildListSubtitle(FlutterI18n.translate(
               context,
