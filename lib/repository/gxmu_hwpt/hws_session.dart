@@ -13,8 +13,6 @@ import 'package:watermeter/repository/gxmu_hwpt/model/hwpt.dart';
 import 'package:watermeter/repository/gxmu_ids/jws_session.dart';
 import 'package:watermeter/repository/gxmu_hwpt/hwpt_provider.dart';
 
-import 'package:cookie_jar/cookie_jar.dart';
-
 enum HWPTLoginState {
   none,
   requesting,
@@ -34,12 +32,6 @@ bool get offline =>
 
 class HWSSession extends NetworkSession {
   static final _hwptlock = Lock();
-
-  @override
-  PersistCookieJar get cookieJar => PersistCookieJar(
-        persistSession: true,
-        storage: FileStorage("${supportPath.path}/cookie/hwpt"),
-      );
 
   @override
   Dio get dio => super.dio
@@ -136,6 +128,19 @@ class HWSSession extends NetworkSession {
         "[HWPT][checkAndLogin] "
         "Received message: ${data['message']}.",
       );
+      var cookie = await cookieJar.loadForRequest(
+        Uri.parse("https://hwpt.gxmu.edu.cn/"),
+      );
+      var requestVerificationToken = "";
+      for (var i in cookie) {
+        if (i.name == ".AspNetCore.Antiforgery.7hHhJnQKomo") {
+          requestVerificationToken = i.value;
+        }
+      }
+      log.info(
+        "[HWPT][login] "
+        "Request verification token: $requestVerificationToken",
+      );
       if (data['isSuccess'] == true) {
         Hwpt toReturn = Hwpt(
           token: data['dataModel']['token'],
@@ -151,6 +156,7 @@ class HWSSession extends NetworkSession {
           account: indexConfigMap['account'],
           password: indexConfigMap['password'],
           deskey: indexConfigMap['desKey'],
+          requestVerificationToken: requestVerificationToken,
         );
         HwptProvider().loadUserData(toReturn);
         return toReturn;
@@ -368,6 +374,22 @@ class HWSSession extends NetworkSession {
         "[HWPT][login] "
         "Login successful",
       );
+
+      var cookie = await cookieJar.loadForRequest(
+        Uri.parse("https://hwpt.gxmu.edu.cn/"),
+      );
+      var requestVerificationToken = "";
+      for (var i in cookie) {
+        if (i.name == ".AspNetCore.Antiforgery.7hHhJnQKomo") {
+          requestVerificationToken = i.value;
+        }
+      }
+      
+      log.info(
+        "[HWPT][login] "
+        "Request verification token: $requestVerificationToken",
+      );
+
       Hwpt toReturn = Hwpt(
         token: data['dataModel']['token'],
         userId: data['dataModel']['userInfo']['id'],
@@ -382,6 +404,7 @@ class HWSSession extends NetworkSession {
         account: indexConfigMap['account'],
         password: indexConfigMap['password'],
         deskey: indexConfigMap['desKey'],
+        requestVerificationToken: requestVerificationToken,
       );
       HwptProvider().loadUserData(toReturn);
       return toReturn;

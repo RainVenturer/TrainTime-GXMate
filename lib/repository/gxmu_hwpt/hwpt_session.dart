@@ -21,8 +21,7 @@ class HWPTSession extends HWSSession {
         'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     HttpHeaders.acceptEncodingHeader: 'gzip, deflate, br, zstd',
     HttpHeaders.connectionHeader: 'Keep-Alive',
-    HttpHeaders.contentTypeHeader:
-        "application/json;charset=UTF-8",
+    HttpHeaders.contentTypeHeader: "application/json;charset=UTF-8",
     HttpHeaders.cookieHeader:
         "micrologistics_token=${HwptProvider().userData.token}",
     "Token": HwptProvider().userData.token,
@@ -35,7 +34,7 @@ class HWPTSession extends HWSSession {
     if (HwptProvider().state.value == HwptState.none) {
       return false;
     }
-    
+
     try {
       var response = await dioHWPT.post(
         "https://hwpt.gxmu.edu.cn/ViewControllers/MobileView/VerifyUserToken",
@@ -67,7 +66,7 @@ class HWPTSession extends HWSSession {
         "[hwpt_session][useHwpt] "
         "Ready to use the hwpt.",
       );
-      
+
       final provider = HwptProvider();
       if (provider.state.value == HwptState.none) {
         await provider.initializeData();
@@ -81,7 +80,7 @@ class HWPTSession extends HWSSession {
     });
   }
 
-  Future<String> useApp(String appID) async {
+  Future<(String, dynamic)> useApp(String appID) async {
     return await _hwptLock.synchronized(() async {
       log.info(
         "[hwpt_session][useApp] "
@@ -123,12 +122,42 @@ class HWPTSession extends HWSSession {
       if (value['isSuccess'] == false) {
         throw Exception(value['message']);
       }
+      var location = value['dataModel']['linkUrl'];
+      var response = await dioHWPT.get(
+        location,
+        options: Options(
+          headers: {
+            HttpHeaders.hostHeader: location.split('/')[2].split('?')[0],
+          },
+          validateStatus: (status) =>
+              status != null && status >= 200 && status < 400,
+          followRedirects: false,
+        ),
+      );
+      while (response.headers[HttpHeaders.locationHeader] != null) {
+        location = response.headers[HttpHeaders.locationHeader]![0];
+        log.info(
+          "[hwpt_session][useApp] "
+          "Received location: $location.",
+        );
+        response = await dioHWPT.get(
+          location,
+          options: Options(
+            headers: {
+              HttpHeaders.hostHeader: location.split('/')[2].split('?')[0],
+            },
+            validateStatus: (status) =>
+                status != null && status >= 200 && status < 400,
+            followRedirects: false,
+          ),
+        );
+      }
       log.info(
         "[hwpt_session][useApp] "
-        "Transfer address: ${value['dataModel']['linkUrl']}.",
+        "Transfer address: $location.",
       );
 
-      return value['dataModel']['linkUrl'];
+      return (location.toString(), response);
     });
   }
 }

@@ -185,6 +185,7 @@ electricity:
    date: "Date"
    power: "Remaining"
    update: "Refresh"
+   location: "Location"
 
 # 空闲教室
 empty_classroom:
@@ -282,6 +283,7 @@ homepage:
       title: "Electricity and Hydroenergy Information"
       current_electricity: "{amount} kWh remains"
       cache_notice: "Currently loading cache, retrieved on {date}\n"
+      location: "Location {location}"
       dialog_content: |
          Electricity account：{account}
          Electricity information：{electricityInfo}
@@ -757,7 +759,8 @@ electricity_status:
    need_account: "Need to input electricity account"
    captcha_failed: "Failed to check captcha"
    other_issue: "Program malfunction"
-
+   location_not_found: "Cannot parse location"
+   
 # 校园卡信息状态
 school_card_status:
    failed_to_fetch: "Failed fetching"

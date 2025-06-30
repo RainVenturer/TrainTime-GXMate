@@ -13,6 +13,7 @@ Hwpt _$HwptFromJson(Map<String, dynamic> json) => Hwpt(
       account: json['account'] as String,
       password: json['password'] as String,
       deskey: json['deskey'] as String,
+      requestVerificationToken: json['requestVerificationToken'] as String,
     );
 
 Map<String, dynamic> _$HwptToJson(Hwpt instance) => <String, dynamic>{
@@ -28,4 +29,5 @@ Map<String, dynamic> _$HwptToJson(Hwpt instance) => <String, dynamic>{
       'account': instance.account,
       'password': instance.password,
       'deskey': instance.deskey,
+      'requestVerificationToken': instance.requestVerificationToken,
     };

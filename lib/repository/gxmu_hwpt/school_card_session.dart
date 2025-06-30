@@ -123,7 +123,8 @@ class SchoolCardSession extends HWPTSession {
           .then((value) => value.data);
     }
 
-    String qrCodeData = json.decode(crypto.decrypt(qrCodeResp["dataModel"]))["QRcode"];
+    String qrCodeData =
+        json.decode(crypto.decrypt(qrCodeResp["dataModel"]))["QRcode"];
 
     log.info(
       "[SchoolCardSession][getQRCode]"
@@ -169,15 +170,7 @@ class SchoolCardSession extends HWPTSession {
 
       // Only get token once
       if (firstPaidState) {
-        var linkUrl = await useApp("dd854656a8f3490e9ef5186b5947e6dc");
-        await dioHWPT.get(
-          linkUrl,
-          options: Options(
-            headers: {
-              HttpHeaders.hostHeader: "zxfwq.gxmu.edu.cn",
-            },
-          ),
-        );
+        await useApp("dd854656a8f3490e9ef5186b5947e6dc");
         firstPaidState = false;
       }
 

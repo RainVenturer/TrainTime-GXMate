@@ -154,6 +154,7 @@ electricity:
   power_title: 餘額信息
   cache_notice: 上次獲取時間
   account: 電費賬號
+  location: '宿舍位置'
   remain_power: 電量信息
   owe_info: 欠費信息
   history: 歷史記錄
@@ -247,6 +248,7 @@ homepage:
   electricity_card:
     title: 水電信息
     current_electricity: 餘額 {amount} 度
+    location: "宿舍位置 {location}"
     cache_notice: '緩存獲取於 {date}
 
       '
@@ -697,6 +699,7 @@ electricity_status:
   remain_network_issue: 網絡故障
   remain_not_found: 查詢失敗
   remain_other_issue: 查詢故障
+  location_not_found: "無法解析宿舍位置"
   owe_fetching: 正在獲取欠費
   owe_issue: 欠費信息網絡故障
   owe_not_found: 目前欠款無法查詢

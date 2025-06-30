@@ -15,8 +15,8 @@ import 'package:watermeter/repository/gxmu_hwpt/school_card_session.dart'
 import 'package:watermeter/repository/message_session.dart' as message;
 // import 'package:watermeter/repository/gxmu_ids/library_session.dart'
 // as borrow_info;
-// import 'package:watermeter/repository/gxmu_ids/electricity_session.dart'
-//     as electricity;
+import 'package:watermeter/repository/gxmu_hwpt/electricity_session.dart'
+    as electricity;
 import 'package:watermeter/repository/gxmu_ids/jws_session.dart';
 import 'package:watermeter/repository/gxmu_hwpt/hws_session.dart';
 import 'package:watermeter/repository/captcha/captcha_solver.dart';
@@ -73,7 +73,7 @@ Future<void> _comboLogin({
   }
 
   final hwptProvider = Get.find<HwptProvider>();
-  
+
   try {
     await HWSSession().checkAndLogin(
       target: "https://hwpt.gxmu.edu.cn",
@@ -110,7 +110,7 @@ Future<void> update({
   message.checkMessage();
 
   final hwptProvider = Get.find<HwptProvider>();
-  
+
   // Retry Login
   if (forceRetryLogin ||
       loginState == JWSLoginState.fail ||
@@ -143,7 +143,10 @@ Future<void> update({
       // }),
       // Future(() => borrow_info.LibrarySession().getBorrowList()),
       Future(() => school_card_session.SchoolCardSession().initSession()),
-      // Future(() => electricity.update()),
+      Future(() async {
+        await electricity.ElectricitySession().initSession();
+        electricity.update();
+      }),
       // Future(() => school_net.update())
     ]).then((value) => updateCurrentData()).onError((error, stackTrace) {
       log.info(

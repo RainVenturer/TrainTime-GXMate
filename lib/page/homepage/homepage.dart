@@ -17,7 +17,7 @@ import 'package:watermeter/controller/classtable_controller.dart';
 // import 'package:watermeter/controller/exam_controller.dart';
 // import 'package:watermeter/controller/experiment_controller.dart';
 import 'package:watermeter/page/homepage/info_widget/classtable_card.dart';
-// import 'package:watermeter/page/homepage/info_widget/electricity_card.dart';
+import 'package:watermeter/page/homepage/info_widget/electricity_card.dart';
 // import 'package:watermeter/page/homepage/info_widget/library_card.dart';
 import 'package:watermeter/page/homepage/info_widget/school_card_info_card.dart';
 import 'package:watermeter/page/homepage/notice_card/notice_card.dart';
@@ -53,7 +53,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   final List<Widget> children = const [
-    // ElectricityCard(),
+    ElectricityCard(),
     // LibraryCard(),
     SchoolCardInfoCard(),
     // SchoolnetCard(),

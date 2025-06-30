@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: MPL-2.0
 import 'package:flutter/material.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:marquee/marquee.dart';
 
 class InfoCard extends StatelessWidget {
   final String title;
@@ -62,12 +63,60 @@ class InfoItem extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 4),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: valueColor ?? Theme.of(context).primaryColor,
+          /// @ai generated marquee widget
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                // 创建一个 TextPainter 来测量文本宽度
+                final textPainter = TextPainter(
+                  text: TextSpan(
+                    text: value,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: valueColor ?? Theme.of(context).primaryColor,
+                    ),
+                  ),
+                  maxLines: 1,
+                  textDirection: TextDirection.ltr,
+                )..layout(maxWidth: double.infinity);
+
+                // 如果文本宽度超过可用宽度，使用 Marquee
+                if (textPainter.width > constraints.maxWidth) {
+                  return SizedBox(
+                    height: 20,
+                    child: Marquee(
+                      text: value,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: valueColor ?? Theme.of(context).primaryColor,
+                      ),
+                      scrollAxis: Axis.horizontal,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      blankSpace: 20.0,
+                      velocity: 30.0,
+                      pauseAfterRound: const Duration(seconds: 1),
+                      startPadding: 10.0,
+                      accelerationDuration: const Duration(seconds: 1),
+                      accelerationCurve: Curves.linear,
+                      decelerationDuration: const Duration(milliseconds: 500),
+                      decelerationCurve: Curves.easeOut,
+                    ),
+                  );
+                }
+
+                // 如果文本宽度不超过可用宽度，使用普通 Text
+                return Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: valueColor ?? Theme.of(context).primaryColor,
+                  ),
+                  maxLines: 1,
+                );
+              },
             ),
           ),
         ],

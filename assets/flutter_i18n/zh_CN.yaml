@@ -169,6 +169,7 @@ electricity:
     power_title: "余额信息"
     cache_notice: "上次获取时间"
     account: "电费账号"
+    location: "查询位置"
     remain_power: "电量信息"
     owe_info: "欠费信息"
     history: "历史记录"
@@ -271,6 +272,7 @@ homepage:
         no_arrangement_infoText: "暂无日程"
     electricity_card:
         title: "水电信息"
+        location: "宿舍位置 {location}"
         current_electricity: "余额 {amount} 度"
         cache_notice: "缓存获取于 {date}\n"
         dialog_content: |-
@@ -745,6 +747,7 @@ electricity_status:
     need_account: "需要填写电费账号"
     captcha_failed: "验证码识别失败"
     other_issue: "程序故障"
+    location_not_found: "无法解析宿舍位置"
 
 # 校园卡信息状态
 school_card_status:
