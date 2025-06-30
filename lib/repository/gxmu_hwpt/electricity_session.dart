@@ -572,6 +572,7 @@ class ElectricitySession extends HWPTSession {
       var room =
           "${buildingNumber ?? ""}${regex.firstMatch(locationList[4])?.group(1) ?? ""}";
       toReturn.add(room);
+      return toReturn;
     } else {
       var index = locationList.indexWhere((element) => element.contains("武鸣"));
       var building = locationList[index + 1];
@@ -622,8 +623,8 @@ class ElectricitySession extends HWPTSession {
       final regex = RegExp(r'(\d+)(?=[房室])');
       var room = regex.firstMatch(locationList[index])?.group(1) ?? "";
       toReturn.add(room);
+      return toReturn;
     }
-    throw NotFoundException();
   }
 
   /// 智慧公寓 appId: ddec7a102aa74d13b181154e6dee1ed1
