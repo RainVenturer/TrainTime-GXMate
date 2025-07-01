@@ -394,7 +394,7 @@ class ElectricitySession extends HWPTSession {
         dataModel.map((item) => MapEntry(item['name'], item['code'])),
       );
 
-      preference.setString(
+      await preference.setString(
         preference.Preference.locationBB,
         choiceListsLevel3[location[1]]!,
       );
@@ -473,12 +473,8 @@ class ElectricitySession extends HWPTSession {
           )
           .then((value) => value.data);
       var meterId = currentRoomInfo['Data']['meterList'][0]['meterId'];
-      preference.setString(
-        preference.Preference.locationWM,
-        meterId,
-      );
 
-      preference.setString(
+      await preference.setString(
         preference.Preference.locationWM,
         meterId,
       );
@@ -695,7 +691,7 @@ class ElectricitySession extends HWPTSession {
         "Apartment Location: $apartmentLocation",
       );
 
-      preference.setString(
+      await preference.setString(
         preference.Preference.dorm,
         apartmentLocation,
       );
