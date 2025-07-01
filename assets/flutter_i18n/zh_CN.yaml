@@ -173,7 +173,7 @@ electricity:
     remain_power: "电量信息"
     owe_info: "欠费信息"
     history: "历史记录"
-    info: "有欠费一般代表水费"
+    info: "请确认获取到的宿舍位置是否正确"
     date: "日期"
     power: "该日0点电量"
     update: "刷新信息"
@@ -512,6 +512,7 @@ setting:
     electricity_password_setting: "电费帐号密码设置"
     electricity_password_description: "非 123456 请设置"
     electricity_account_setting: "电费账号设置"
+    electricity_account_description: "若解析失败或解析错误，请手动输入"
     schoolnet_password_setting: "校园网帐号密码设置"
     schoolnet_password_description: "不设置查看不了网费"
     schoolcard_password_setting: "校园卡密码设置"
@@ -569,11 +570,23 @@ setting:
     change_swift_dialog:
         title: "课程偏移设置"
         input_hint: "请在此输入数字"
-    change_electricity_title: "修改电费帐号"
+    change_electricity_title: "修改电费账户"
     change_electricity_account:
-        title: "修改电费帐号"
-        input_hint: "请在此输入账号"
-        blank_input: "输入空白!"
+        title: "修改电费账户"
+        input_hint: "请输入电费账户"
+        blank_input: "输入不能为空"
+        building_selection: "宿舍楼选择"
+        benbu: "本部校区"
+        wuming: "武鸣校区"
+        benbu_hint: "输入宿舍号，如有前缀请一同输入"
+        wuming_hint: "输入宿舍号：如 101"
+        invalid_input: "无效的输入"
+        info: |-
+            假设你住在宿舍E楼611，那么你选择
+            宿舍B、E楼
+            输入宿舍号：2611
+            与企业微信中的行为一致
+
     change_experiment_title: "修改物理实验账号密码"
     change_sport_title: "修改体育系统账号密码"
     change_password_dialog:

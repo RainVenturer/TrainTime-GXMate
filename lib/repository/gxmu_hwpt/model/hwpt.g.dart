@@ -8,12 +8,10 @@ Hwpt _$HwptFromJson(Map<String, dynamic> json) => Hwpt(
       identityId: json['identityId'] as String,
       identityCode: json['identityCode'] as String,
       studentNumber: json['studentNumber'] as String,
-      cardNumber: json['cardNumber'] as String,
       campusId: json['campusId'] as String,
       account: json['account'] as String,
       password: json['password'] as String,
       deskey: json['deskey'] as String,
-      requestVerificationToken: json['requestVerificationToken'] as String,
     );
 
 Map<String, dynamic> _$HwptToJson(Hwpt instance) => <String, dynamic>{
@@ -24,10 +22,8 @@ Map<String, dynamic> _$HwptToJson(Hwpt instance) => <String, dynamic>{
       'identityId': instance.identityId,
       'identityCode': instance.identityCode,
       'studentNumber': instance.studentNumber,
-      'cardNumber': instance.cardNumber,
       'campusId': instance.campusId,
       'account': instance.account,
       'password': instance.password,
       'deskey': instance.deskey,
-      'requestVerificationToken': instance.requestVerificationToken,
     };

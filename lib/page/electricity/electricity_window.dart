@@ -32,24 +32,24 @@ class ElectricityWindow extends StatelessWidget {
           );
         }
         return [
-          // Text(
-          //   FlutterI18n.translate(
-          //     context,
-          //     "electricity.info",
-          //   ),
-          //   style: TextStyle(
-          //     fontSize: 14,
-          //     color: Colors.orange[800],
-          //     height: 1.4,
-          //   ),
-          // )
-          //     .padding(all: 16)
-          //     .decorated(
-          //       color: Colors.orange[50],
-          //       borderRadius: BorderRadius.circular(12),
-          //       border: Border.all(color: Colors.orange[200]!),
-          //     )
-          //     .padding(all: 4),
+          Text(
+            FlutterI18n.translate(
+              context,
+              "electricity.info",
+            ),
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.orange[800],
+              height: 1.4,
+            ),
+          )
+              .padding(all: 16)
+              .decorated(
+                color: Colors.orange[50],
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.orange[200]!),
+              )
+              .padding(all: 4),
           InfoCard(
             title: FlutterI18n.translate(
               context,

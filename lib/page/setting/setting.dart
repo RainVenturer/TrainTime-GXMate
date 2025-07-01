@@ -18,7 +18,7 @@ import 'package:watermeter/page/public_widget/context_extension.dart';
 import 'package:watermeter/page/public_widget/re_x_card.dart';
 import 'package:watermeter/page/setting/dialogs/change_color_dialog.dart';
 import 'package:watermeter/page/setting/dialogs/change_localization_dialog.dart';
-// import 'package:watermeter/page/setting/dialogs/electricity_account_dialog.dart';
+import 'package:watermeter/page/setting/dialogs/electricity_account_dialog.dart';
 // import 'package:watermeter/page/setting/dialogs/schoolnet_password_dialog.dart';
 import 'package:watermeter/page/setting/dialogs/update_dialog.dart';
 import 'package:watermeter/repository/localization.dart';
@@ -42,8 +42,9 @@ import 'package:watermeter/page/setting/dialogs/school_card_password_dialog.dart
 import 'package:watermeter/page/setting/dialogs/encourage_word_dialog.dart';
 import 'package:watermeter/repository/network_session.dart';
 import 'package:watermeter/repository/gxmu_ids/classtable_session.dart';
-// import 'package:watermeter/repository/gxmu_ids/electricity_session.dart';
-// import 'package:watermeter/repository/gxmu_ids/score_session.dart';
+import 'package:watermeter/repository/gxmu_hwpt/electricity_session.dart';
+import 'package:watermeter/repository/gxmu_ids/score_session.dart';
+import 'package:watermeter/repository/gxmu_hwpt/hwpt_provider.dart';
 import 'package:watermeter/themes/color_seed.dart';
 
 class SettingWindow extends StatefulWidget {
@@ -441,7 +442,24 @@ class _SettingWindowState extends State<SettingWindow> {
                 //         );
                 //       }),
                 // ],
-                // const Divider(),
+                ListTile(
+                    title: Text(FlutterI18n.translate(
+                      context,
+                      "setting.electricity_account_setting",
+                    )),
+                    subtitle: Text(FlutterI18n.translate(
+                      context,
+                      "setting.electricity_account_description",
+                    )),
+                    trailing: const Icon(Icons.navigate_next),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) => const ElectricityAccountDialog(),
+                      );
+                    }),
+                const Divider(),
                 ListTile(
                     title: Text(FlutterI18n.translate(
                       context,
@@ -890,9 +908,9 @@ void _removeCache() {
     ClassTableFile.schoolClassName,
     // ExamController.examDataCacheName,
     // ExperimentController.experimentCacheName,
-    // ScoreSession.scoreListCacheName,
-    // ElectricitySession.electricityCache,
-    // ElectricitySession.electricityHistory
+    ScoreSession.scoreListCacheName,
+    ElectricitySession.electricityCache,
+    ElectricitySession.electricityHistory
   ]) {
     var file = File(
       "${supportPath.path}/$value",
@@ -911,9 +929,10 @@ void _removeAll() {
     ClassTableFile.decorationName,
     // ExamController.examDataCacheName,
     // ExperimentController.experimentCacheName,
-    // ScoreSession.scoreListCacheName,
-    // ElectricitySession.electricityCache,
-    // ElectricitySession.electricityHistory
+    ScoreSession.scoreListCacheName,
+    ElectricitySession.electricityCache,
+    ElectricitySession.electricityHistory,
+    HwptProvider.userDataName,
   ]) {
     var file = File(
       "${supportPath.path}/$value",

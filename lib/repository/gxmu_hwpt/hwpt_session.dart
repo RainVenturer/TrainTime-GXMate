@@ -10,7 +10,6 @@ import 'package:watermeter/repository/gxmu_hwpt/hwpt_provider.dart';
 
 class HWPTSession extends HWSSession {
   static final _hwptLock = Lock();
-  static const userDataName = "hwptUserData.json";
 
   /// This header shall only be used in the ehall related stuff...
   Map<String, String> refererHeader = {

@@ -128,19 +128,7 @@ class HWSSession extends NetworkSession {
         "[HWPT][checkAndLogin] "
         "Received message: ${data['message']}.",
       );
-      var cookie = await cookieJar.loadForRequest(
-        Uri.parse("https://hwpt.gxmu.edu.cn/"),
-      );
-      var requestVerificationToken = "";
-      for (var i in cookie) {
-        if (i.name == ".AspNetCore.Antiforgery.7hHhJnQKomo") {
-          requestVerificationToken = i.value;
-        }
-      }
-      log.info(
-        "[HWPT][login] "
-        "Request verification token: $requestVerificationToken",
-      );
+      
       if (data['isSuccess'] == true) {
         Hwpt toReturn = Hwpt(
           token: data['dataModel']['token'],
@@ -149,14 +137,11 @@ class HWSSession extends NetworkSession {
           sitesId: data['dataModel']['userInfo']['sitesId'],
           identityId: data['dataModel']['userInfo']['identityId'],
           studentNumber: data['dataModel']['userInfo']['studentNumber'],
-          cardNumber: data['dataModel']['userInfo']['userMechanismInfos'][0]
-              ['cardNumber'],
           identityCode: data['dataModel']['userInfo']['identityCode'],
           campusId: indexConfigMap['CampusId'].replaceAll('\'', ''),
           account: indexConfigMap['account'],
           password: indexConfigMap['password'],
           deskey: indexConfigMap['desKey'],
-          requestVerificationToken: requestVerificationToken,
         );
         HwptProvider().loadUserData(toReturn);
         return toReturn;
@@ -375,21 +360,6 @@ class HWSSession extends NetworkSession {
         "Login successful",
       );
 
-      var cookie = await cookieJar.loadForRequest(
-        Uri.parse("https://hwpt.gxmu.edu.cn/"),
-      );
-      var requestVerificationToken = "";
-      for (var i in cookie) {
-        if (i.name == ".AspNetCore.Antiforgery.7hHhJnQKomo") {
-          requestVerificationToken = i.value;
-        }
-      }
-      
-      log.info(
-        "[HWPT][login] "
-        "Request verification token: $requestVerificationToken",
-      );
-
       Hwpt toReturn = Hwpt(
         token: data['dataModel']['token'],
         userId: data['dataModel']['userInfo']['id'],
@@ -397,14 +367,11 @@ class HWSSession extends NetworkSession {
         sitesId: data['dataModel']['userInfo']['sitesId'],
         identityId: data['dataModel']['userInfo']['identityId'],
         studentNumber: data['dataModel']['userInfo']['studentNumber'],
-        cardNumber: data['dataModel']['userInfo']['userMechanismInfos'][0]
-            ['cardNumber'],
         identityCode: data['dataModel']['userInfo']['identityCode'],
         campusId: indexConfigMap['CampusId'].replaceAll('\'', ''),
         account: indexConfigMap['account'],
         password: indexConfigMap['password'],
         deskey: indexConfigMap['desKey'],
-        requestVerificationToken: requestVerificationToken,
       );
       HwptProvider().loadUserData(toReturn);
       return toReturn;

@@ -17,8 +17,6 @@ class Hwpt {
   final String identityId;
   final String identityCode;
   final String studentNumber;
-  final String cardNumber;
-  final String requestVerificationToken;
   // Index config
   final String campusId;
   final String account;
@@ -33,12 +31,10 @@ class Hwpt {
     required this.identityId,
     required this.identityCode,
     required this.studentNumber,
-    required this.cardNumber,
     required this.campusId,
     required this.account,
     required this.password,
     required this.deskey,
-    required this.requestVerificationToken,
   });
 
   factory Hwpt.empty() => Hwpt(
@@ -49,12 +45,10 @@ class Hwpt {
         identityId: "",
         identityCode: "",
         studentNumber: "",
-        cardNumber: "",
         campusId: "",
         account: "",
         password: "",
         deskey: "",
-        requestVerificationToken: "",
       );
 
   // 将对象转换为JSON

@@ -64,7 +64,7 @@ Future<void> update({
 
   Future(() async {
     try {
-      await ElectricitySession().getElectricity(force: force);
+      await ElectricitySession().getElectricity();
     } on DioException catch (e, s) {
       log.handle(e, s);
       electricityInfo.value.remain = "electricity_status.remain_network_issue";
@@ -296,14 +296,29 @@ class ElectricitySession extends HWPTSession {
   //     });
 
   /// 获取宿舍电费 本部: appId: 215093e432424d0ea21ed98a27e93d61
-  Future<void> getElectricity({bool force = false}) async {
+  Future<void> getElectricity() async {
+    List<String> location = [];
+    if (preference.getString(preference.Preference.location).isEmpty) {
+      location = getLocation(
+        preference.getString(preference.Preference.dorm),
+      );
+      log.info(
+        "[ElectricitySession][getElectricity]"
+        "Location auto get: $location",
+      );
+    } else {
+      location =
+          preference.getString(preference.Preference.location).split("/");
+      log.info(
+        "[ElectricitySession][getElectricity]"
+        "Location user edit: $location",
+      );
+    }
+
     if (preference.getString(preference.Preference.dorm).contains("本部")) {
       /// ----------------------------------------
       /// 获取本部宿舍电量
       /// ----------------------------------------
-      List<String> location = getLocation(
-        preference.getString(preference.Preference.dorm),
-      );
       var response = await useApp("215093e432424d0ea21ed98a27e93d61");
 
       /// 获取 referer
@@ -318,74 +333,71 @@ class ElectricitySession extends HWPTSession {
       final requestVerificationToken =
           regex.firstMatch(response.$2.data)!.group(1)!;
 
-      if (force ||
-          preference.getString(preference.Preference.locationBB).isEmpty) {
-        var firstLevel = await dioYDFWPT
-            .post(
-              "https://ydfwpt.gxmu.edu.cn/Home/GetRoomTree",
-              data: {
-                "level": "1",
-                "studentNumber": studentNumber,
-                "__RequestVerificationToken": requestVerificationToken,
-              },
-              options: Options(headers: {
+      var firstLevel = await dioYDFWPT
+          .post(
+            "https://ydfwpt.gxmu.edu.cn/Home/GetRoomTree",
+            data: {
+              "level": "1",
+              "studentNumber": studentNumber,
+              "__RequestVerificationToken": requestVerificationToken,
+            },
+            options: Options(headers: {
+              ...refererHeadersYDFWPT,
+              HttpHeaders.refererHeader: referer,
+            }),
+          )
+          .then((value) => value.data);
+      var dataModel = firstLevel['dataModel'] as List;
+      Map<String, String> choiceListsLevel1 = Map<String, String>.fromEntries(
+        dataModel.map((item) => MapEntry(item['name'], item['code'])),
+      );
+      var secondLevel = await dioYDFWPT
+          .post(
+            "https://ydfwpt.gxmu.edu.cn/Home/GetRoomTree",
+            data: {
+              "level": 2,
+              "campusCode": choiceListsLevel1["本校区"]!,
+              "studentNumber": studentNumber,
+              "__RequestVerificationToken": requestVerificationToken,
+            },
+            options: Options(
+              headers: {
                 ...refererHeadersYDFWPT,
                 HttpHeaders.refererHeader: referer,
-              }),
-            )
-            .then((value) => value.data);
-        var dataModel = firstLevel['dataModel'] as List;
-        Map<String, String> choiceListsLevel1 = Map<String, String>.fromEntries(
-          dataModel.map((item) => MapEntry(item['name'], item['code'])),
-        );
-        var secondLevel = await dioYDFWPT
-            .post(
-              "https://ydfwpt.gxmu.edu.cn/Home/GetRoomTree",
-              data: {
-                "level": 2,
-                "campusCode": choiceListsLevel1["本校区"]!,
-                "studentNumber": studentNumber,
-                "__RequestVerificationToken": requestVerificationToken,
               },
-              options: Options(
-                headers: {
-                  ...refererHeadersYDFWPT,
-                  HttpHeaders.refererHeader: referer,
-                },
-              ),
-            )
-            .then((value) => value.data);
-        dataModel = secondLevel['dataModel'] as List;
-        Map<String, String> choiceListsLevel2 = Map<String, String>.fromEntries(
-          dataModel.map((item) => MapEntry(item['name'], item['code'])),
-        );
-        var thirdLevel = await dioYDFWPT
-            .post(
-              "https://ydfwpt.gxmu.edu.cn/Home/GetRoomTree",
-              data: {
-                "level": 3,
-                "campusCode": choiceListsLevel1["本校区"]!,
-                "buildingCode": choiceListsLevel2[location[0]]!,
-                "studentNumber": studentNumber,
-                "__RequestVerificationToken": requestVerificationToken,
+            ),
+          )
+          .then((value) => value.data);
+      dataModel = secondLevel['dataModel'] as List;
+      Map<String, String> choiceListsLevel2 = Map<String, String>.fromEntries(
+        dataModel.map((item) => MapEntry(item['name'], item['code'])),
+      );
+      var thirdLevel = await dioYDFWPT
+          .post(
+            "https://ydfwpt.gxmu.edu.cn/Home/GetRoomTree",
+            data: {
+              "level": 3,
+              "campusCode": choiceListsLevel1["本校区"]!,
+              "buildingCode": choiceListsLevel2[location[0]]!,
+              "studentNumber": studentNumber,
+              "__RequestVerificationToken": requestVerificationToken,
+            },
+            options: Options(
+              headers: {
+                HttpHeaders.refererHeader: referer,
               },
-              options: Options(
-                headers: {
-                  HttpHeaders.refererHeader: referer,
-                },
-              ),
-            )
-            .then((value) => value.data);
-        dataModel = thirdLevel['dataModel'] as List;
-        Map<String, String> choiceListsLevel3 = Map<String, String>.fromEntries(
-          dataModel.map((item) => MapEntry(item['name'], item['code'])),
-        );
+            ),
+          )
+          .then((value) => value.data);
+      dataModel = thirdLevel['dataModel'] as List;
+      Map<String, String> choiceListsLevel3 = Map<String, String>.fromEntries(
+        dataModel.map((item) => MapEntry(item['name'], item['code'])),
+      );
 
-        preference.setString(
-          preference.Preference.locationBB,
-          choiceListsLevel3[location[1]]!,
-        );
-      }
+      preference.setString(
+        preference.Preference.locationBB,
+        choiceListsLevel3[location[1]]!,
+      );
 
       var roomBalance = await dioYDFWPT
           .post(
@@ -410,9 +422,7 @@ class ElectricitySession extends HWPTSession {
       /// 获取武鸣校区宿舍电量
       /// ----------------------------------------
       /// 获取 access_Jwt
-      List<String> location = getLocation(
-        preference.getString(preference.Preference.dorm),
-      );
+
       var specialSignIn = await dioXFEWM
           .get(
             "http://xfewm.gxmu.edu.cn/ICBS_V2_Server/v3/XINTFLg/SpecialSignIn?p3=1&p2=d275830b64be27caa72658f4bfffded7&p1=ph",
@@ -420,62 +430,58 @@ class ElectricitySession extends HWPTSession {
           .then((value) => value.data);
       var accessJwt = specialSignIn['Data']['access_Jwt'];
 
-      if (force ||
-          preference.getString(preference.Preference.locationWM).isEmpty) {
-        /// 获取校区信息
-        var campusInfo = await dioXFEWM
-            .get(
-              "http://xfewm.gxmu.edu.cn/ICBS_V2_Server/v3/XINTF/GetAreaInfo?access_Jwt=$accessJwt",
-              options: Options(headers: {"authorization": "Bearer $accessJwt"}),
-            )
-            .then((value) => value.data);
-        var areaCode = campusInfo['Data']['areaInfoList'][0]['AreaID'];
+      /// 获取校区信息
+      var campusInfo = await dioXFEWM
+          .get(
+            "http://xfewm.gxmu.edu.cn/ICBS_V2_Server/v3/XINTF/GetAreaInfo?access_Jwt=$accessJwt",
+            options: Options(headers: {"authorization": "Bearer $accessJwt"}),
+          )
+          .then((value) => value.data);
+      var areaCode = campusInfo['Data']['areaInfoList'][0]['AreaID'];
 
-        /// 获取建筑信息
-        var areaInfo = await dioXFEWM
-            .get(
-              "http://xfewm.gxmu.edu.cn/ICBS_V2_Server/v3/XINTF/GetArchitectureInfo?AreaID=$areaCode",
-              options: Options(headers: {"authorization": "Bearer $accessJwt"}),
-            )
-            .then((value) => value.data);
-        var dataModel = areaInfo['Data']['architectureInfoList'] as List;
-        Map<String, String> architectureInfo = Map<String, String>.fromEntries(
-          dataModel.map(
-            (item) =>
-                MapEntry(item['ArchitectureName'], item['ArchitectureID']),
-          ),
-        );
+      /// 获取建筑信息
+      var areaInfo = await dioXFEWM
+          .get(
+            "http://xfewm.gxmu.edu.cn/ICBS_V2_Server/v3/XINTF/GetArchitectureInfo?AreaID=$areaCode",
+            options: Options(headers: {"authorization": "Bearer $accessJwt"}),
+          )
+          .then((value) => value.data);
+      var dataModel = areaInfo['Data']['architectureInfoList'] as List;
+      Map<String, String> architectureInfo = Map<String, String>.fromEntries(
+        dataModel.map(
+          (item) => MapEntry(item['ArchitectureName'], item['ArchitectureID']),
+        ),
+      );
 
-        /// 获取楼层房间信息
-        var roomInfo = await dioXFEWM
-            .get(
-              "http://xfewm.gxmu.edu.cn/ICBS_V2_Server/v3/XINTF/GetRoomInfo?ArchitectureID=${architectureInfo[location[0]]}&Floor=${location[1].toString()[0]}",
-              options: Options(headers: {"authorization": "Bearer $accessJwt"}),
-            )
-            .then((value) => value.data);
-        dataModel = roomInfo['Data']['roomInfoList'] as List;
-        Map<String, String> rooms = Map<String, String>.fromEntries(
-          dataModel.map((item) => MapEntry(item['RoomName'], item['RoomNo'])),
-        );
+      /// 获取楼层房间信息
+      var roomInfo = await dioXFEWM
+          .get(
+            "http://xfewm.gxmu.edu.cn/ICBS_V2_Server/v3/XINTF/GetRoomInfo?ArchitectureID=${architectureInfo[location[0]]}&Floor=${location[1].toString()[0]}",
+            options: Options(headers: {"authorization": "Bearer $accessJwt"}),
+          )
+          .then((value) => value.data);
+      dataModel = roomInfo['Data']['roomInfoList'] as List;
+      Map<String, String> rooms = Map<String, String>.fromEntries(
+        dataModel.map((item) => MapEntry(item['RoomName'], item['RoomNo'])),
+      );
 
-        /// 获取房间电表信息
-        var currentRoomInfo = await dioXFEWM
-            .get(
-              "http://xfewm.gxmu.edu.cn/ICBS_V2_Server/v3/XINTF/GetRoomMeterInfo?RoomID=${rooms[location[1]]}",
-              options: Options(headers: {"authorization": "Bearer $accessJwt"}),
-            )
-            .then((value) => value.data);
-        var meterId = currentRoomInfo['Data']['meterList'][0]['meterId'];
-        preference.setString(
-          preference.Preference.locationWM,
-          meterId,
-        );
+      /// 获取房间电表信息
+      var currentRoomInfo = await dioXFEWM
+          .get(
+            "http://xfewm.gxmu.edu.cn/ICBS_V2_Server/v3/XINTF/GetRoomMeterInfo?RoomID=${rooms[location[1]]}",
+            options: Options(headers: {"authorization": "Bearer $accessJwt"}),
+          )
+          .then((value) => value.data);
+      var meterId = currentRoomInfo['Data']['meterList'][0]['meterId'];
+      preference.setString(
+        preference.Preference.locationWM,
+        meterId,
+      );
 
-        preference.setString(
-          preference.Preference.locationWM,
-          meterId,
-        );
-      }
+      preference.setString(
+        preference.Preference.locationWM,
+        meterId,
+      );
 
       /// 获取电表余额
       var meterBalance = await dioXFEWM
@@ -497,7 +503,7 @@ class ElectricitySession extends HWPTSession {
     );
     List<String> toReturn = [];
     List<String> locationList = dorm.split("/");
-
+    //TODO: 处理宿舍楼，样本不足只能粗略估计
     if (dorm.contains("本部")) {
       /// 处理宿舍楼
       String building = locationList[2];
@@ -572,7 +578,6 @@ class ElectricitySession extends HWPTSession {
       var room =
           "${buildingNumber ?? ""}${regex.firstMatch(locationList[4])?.group(1) ?? ""}";
       toReturn.add(room);
-      return toReturn;
     } else {
       var index = locationList.indexWhere((element) => element.contains("武鸣"));
       var building = locationList[index + 1];
@@ -623,8 +628,11 @@ class ElectricitySession extends HWPTSession {
       final regex = RegExp(r'(\d+)(?=[房室])');
       var room = regex.firstMatch(locationList[index])?.group(1) ?? "";
       toReturn.add(room);
-      return toReturn;
     }
+    if (toReturn.isEmpty || toReturn.length != 2) {
+      throw NotFoundException();
+    }
+    return toReturn;
   }
 
   /// 智慧公寓 appId: ddec7a102aa74d13b181154e6dee1ed1

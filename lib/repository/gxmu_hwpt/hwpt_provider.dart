@@ -19,6 +19,7 @@ enum HwptState {
 
 class HwptProvider extends GetxController {
   static final HwptProvider _instance = HwptProvider._internal();
+  static const userDataName = "hwptUserData.json";
   factory HwptProvider() => _instance;
   HwptProvider._internal();
 
@@ -38,7 +39,7 @@ class HwptProvider extends GetxController {
       "Init hwpt file.",
     );
     userDataFile = File(
-      "${supportPath.path}/${HWPTSession.userDataName}",
+      "${supportPath.path}/$userDataName",
     );
     initializeData();
   }
@@ -80,7 +81,7 @@ class HwptProvider extends GetxController {
 
   Future<void> updateUserData({bool isForce = false}) async {
     if (state.value == HwptState.fetching) return;
-    
+
     state.value = HwptState.fetching;
     error = null;
 
@@ -88,7 +89,8 @@ class HwptProvider extends GetxController {
       bool userDataFileIsExist = userDataFile.existsSync();
       bool isNotNeedRefreshCache = userDataFileIsExist &&
           !isForce &&
-          DateTime.now().difference(userDataFile.lastModifiedSync()).inDays <= 2;
+          DateTime.now().difference(userDataFile.lastModifiedSync()).inDays <=
+              2;
 
       if (isNotNeedRefreshCache) {
         _userData = Hwpt.fromJson(

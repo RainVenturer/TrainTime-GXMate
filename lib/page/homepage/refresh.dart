@@ -114,8 +114,8 @@ Future<void> update({
   // Retry Login
   if (forceRetryLogin ||
       loginState == JWSLoginState.fail ||
-      loginStateHWPT == HWPTLoginState.fail ||
-      hwptProvider.state.value == HwptState.error) {
+      hwptProvider.state.value == HwptState.error ||
+      loginStateHWPT == HWPTLoginState.fail) {
     await _comboLogin(codeCaptcha: codeCaptcha);
   }
 
