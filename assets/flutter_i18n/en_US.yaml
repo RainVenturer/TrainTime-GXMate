@@ -181,7 +181,7 @@ electricity:
    remain_power: "Remain power"
    owe_info: "Arrears"
    history: "Billing History"
-   info: "Arrears generally indicate water fees"
+   info: "Please confirm the location of the dormitory is correct"
    date: "Date"
    power: "Remaining"
    update: "Refresh"
@@ -524,6 +524,7 @@ setting:
    electricity_password_setting: "Electricity account password"
    electricity_password_description: "Please set if not default"
    electricity_account_setting: "Electricity account setting"
+   electricity_account_description: "Manually input if parsing fails or parsing error"
    schoolnet_password_setting: "Campus net password"
    schoolnet_password_description: "If you have not setted it, you cannot query it."
    schoolcard_password_setting: "Campus card password"
@@ -586,6 +587,18 @@ setting:
       title: "Modify electricity account"
       input_hint: "Please input account here"
       blank_input: "Blank input!"
+      invalid_input: "Invalid input!"
+      building_selection: "Dormitory building selection"
+      benbu: "Benbu campus"
+      wuming: "Wuming campus"
+      benbu_hint: "Input dormitory number, if there is a prefix, please input it together"
+      wuming_hint: "Input dormitory number: like 101"
+      info: |-
+         Assuming you live in dormitory E building 611, then you choose
+         Dormitory B, E building
+         Input dormitory number: 2611
+         And consistent with the behavior in WeChat Enterprise
+         
    change_experiment_title: "Modify physics experiment account password"
    change_sport_title: "Modify sports system account password"
    change_password_dialog:

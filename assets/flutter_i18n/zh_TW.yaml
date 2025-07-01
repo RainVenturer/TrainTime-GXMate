@@ -158,7 +158,7 @@ electricity:
   remain_power: 電量信息
   owe_info: 欠費信息
   history: 歷史記錄
-  info: 有欠費一般代表水費
+  info: 請確認獲取到的宿舍位置是否正確
   date: 日期
   power: 該日0點電量
   update: 刷新信息
@@ -480,6 +480,7 @@ setting:
   electricity_password_setting: 電費帳號密碼設置
   electricity_password_description: 非 123456 請設置
   electricity_account_setting: 電費賬號設置
+  electricity_account_description: 若解析失敗或解析錯誤，請手動輸入
   schoolnet_password_setting: 校園網帳號密碼設置
   schoolnet_password_description: 不設置查看不了網費
   schoolcard_password_setting: 校園卡密碼設置
@@ -539,6 +540,18 @@ setting:
     title: 修改電費帳號
     input_hint: 請在此輸入賬號
     blank_input: 輸入空白!
+    invalid_input: 無效的輸入
+    building_selection: 宿舍樓選擇
+    benbu: 本部校區
+    wuming: 武鳴校區
+    benbu_hint: 輸入宿舍號，如有前綴請一同輸入
+    wuming_hint: 輸入宿舍號：如 101
+    info: |-
+      假設你住在宿舍E樓611，那麼你選擇
+      宿舍B、E樓
+      輸入宿舍號：2611
+      與企業微信中的行為一致
+
   change_experiment_title: 修改物理實驗賬號密碼
   change_sport_title: 修改體育系統賬號密碼
   change_password_dialog:

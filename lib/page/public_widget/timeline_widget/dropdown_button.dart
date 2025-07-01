@@ -1,4 +1,4 @@
-// Copyright 2025 Traintime PDA authors.
+// Copyright 2025 RainVenturer and contributors.
 // SPDX-License-Identifier: MPL-2.0
 
 import 'package:flutter/material.dart';
