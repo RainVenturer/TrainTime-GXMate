@@ -120,9 +120,30 @@ class ClassTableFile extends JwxtSession {
       }
       List<String> classroomclassWeek = i["jxcdmc2"].toString().split(",");
       for (var j in classroomclassWeek) {
-        List<String> i = j.split("-");
-        classroomList[i[1].toString()] = i[0];
-        classWeek.add(int.parse(i[1]));
+        // 找到最后一个 '-' 的位置
+        int lastDashIndex = j.lastIndexOf('-');
+        if (lastDashIndex == -1) {
+            log.warning(
+                "[getClasstable][simplifyData] "
+                "Invalid classroom format: $j",
+            );
+            continue;
+        }
+        
+        // 分割地点和周数
+        String location = j.substring(0, lastDashIndex);
+        String weekStr = j.substring(lastDashIndex + 1);
+        
+        try {
+            int week = int.parse(weekStr);
+            classroomList[week.toString()] = location;
+            classWeek.add(week);
+        } catch (e) {
+            log.warning(
+                "[getClasstable][simplifyData] "
+                "Failed to parse week number from: $j, Error: $e",
+            );
+        }
       }
       int maxWeek = classWeek.reduce((a, b) => a > b ? a : b);
       List<bool> weekList = List<bool>.generate(

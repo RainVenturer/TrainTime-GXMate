@@ -60,3 +60,6 @@ android/app/key.jks
 
 # old readme
 README.md.old
+
+# log
+/test/*.txt
