@@ -19,14 +19,14 @@ TrainTime GXMate，是为广西医科大学学生设计的开源信息查询软�
 1. 支持查看本科生和研究生的课程信息，成绩信息。
 2. 查看日程表：包括课程信息。
 3. 查看成绩，包括可以自行选择科目计算均分。
-4.  Android 和 iOS 特有的日程查看桌面小部件。
+4.  Android 和 ~~iOS~~ 特有的日程查看桌面小部件。
 5.  完备的国际化支持：支持繁体中文和英语。
 
 ## 其他特性
 
 1. 代码完全开源，没有任何遥测和埋点。本程序使用上只是模拟浏览器浏览网页，并将数据经过了很轻，很透明的处理。
-2. 使用广受赞誉的 Flutter SDK，跨平台而且性能高。目前本程序能支持 Android，iOS 平台，同时有社区构建的 Windows，Linux 平台。
-3. 受益于 Flutter 跨平台，本程序专门为平板和桌面设计适配了[Master-Detail View](https://blogs.windows.com/windowsdeveloper/2017/05/01/master-master-detail-pattern/)，使其在平板和桌面使用更自然。如果你是桌面用户，你不用专门去一站式看成绩了。
+2. 使用广受赞誉的 Flutter SDK，跨平台而且性能高。~~目前本程序能支持 Android，iOS 平台，同时有社区构建的 Windows，Linux 平台。~~
+3. ~~受益于 Flutter 跨平台，本程序专门为平板和桌面设计适配了[Master-Detail View](https://blogs.windows.com/windowsdeveloper/2017/05/01/master-master-detail-pattern/)，使其在平板和桌面使用更自然。如果你是桌面用户，你不用专门去一站式看成绩了。~~
 4. 开发者很不正经，而且相信群众的力量。本程序融合了除开发者之外到了十余人的想法和功能。
 
 ## 不是西电的同志们如何利用代码？
