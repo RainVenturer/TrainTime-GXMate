@@ -24,7 +24,7 @@ class ElectricityInfo {
       ElectricityInfo(
         fetchDay: time,
         remain: "electricity_status.pending",
-        location: "electricity_status.location_not_found",
+        location: "electricity_status.pending",
       );
 
   factory ElectricityInfo.fromJson(Map<String, dynamic> json) =>

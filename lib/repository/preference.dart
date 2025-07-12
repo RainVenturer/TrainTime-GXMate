@@ -43,9 +43,7 @@ enum Preference {
   institutes(key: "institutes", type: "String"), // 学院
   subject(key: "subject", type: "String"), // 专业
   dorm(key: "dorm", type: "String"), // 宿舍
-  locationWM(key: "locationWM", type: "String"), // 武鸣校区宿舍Id
-  locationBB(key: "locationBB", type: "String"), // 本部宿舍Id
-  location(key: "location", type: "String"), // 宿舍请求 
+  location(key: "location", type: "String"), // 宿舍位置
   idsAccount(key: "idsAccount", type: "String"), // 一站式帐号
   idsPassword(key: "idsPassword", type: "String"), // 一站式密码
   classString(key: "classString", type: "String"), // 班级

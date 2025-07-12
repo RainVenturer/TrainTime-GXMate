@@ -26,10 +26,17 @@ class _ElectricityAccountDialogState extends State<ElectricityAccountDialog> {
 
   final TextEditingController _controller =
       TextEditingController.fromValue(TextEditingValue(
-    text: preference.getString(preference.Preference.location).split("/")[1],
+    text: preference.getString(preference.Preference.location) == ""
+        ? ""
+        : preference.getString(preference.Preference.location).split("/")[1],
     selection: TextSelection.fromPosition(TextPosition(
       affinity: TextAffinity.downstream,
-      offset: preference.getString(preference.Preference.location).split("/")[1].length,
+      offset: preference.getString(preference.Preference.location) == ""
+          ? 0
+          : preference
+              .getString(preference.Preference.location)
+              .split("/")[1]
+              .length,
     )),
   ));
 
@@ -56,7 +63,13 @@ class _ElectricityAccountDialogState extends State<ElectricityAccountDialog> {
               "setting.change_electricity_account.building_selection",
             ),
             items: _isInHeadquarters ? buildingListBB : buildingListWM,
-            value: preference.getString(preference.Preference.location).split("/")[0],
+            value: preference.getString(preference.Preference.location) == ""
+                ? _isInHeadquarters
+                    ? buildingListBB.first
+                    : buildingListWM.first
+                : preference
+                    .getString(preference.Preference.location)
+                    .split("/")[0],
             onChanged: (String? value) {
               if (value != null) {
                 setState(() {

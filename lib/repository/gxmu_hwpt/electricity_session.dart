@@ -394,17 +394,11 @@ class ElectricitySession extends HWPTSession {
         dataModel.map((item) => MapEntry(item['name'], item['code'])),
       );
 
-      await preference.setString(
-        preference.Preference.locationBB,
-        choiceListsLevel3[location[1]]!,
-      );
-
       var roomBalance = await dioYDFWPT
           .post(
             "https://ydfwpt.gxmu.edu.cn/Home/GetRoomBanlance",
             data: {
-              "roomCode":
-                  preference.getString(preference.Preference.locationBB),
+              "roomCode": choiceListsLevel3[location[1]],
               "studentNumber": studentNumber,
               "__RequestVerificationToken": requestVerificationToken,
             },
@@ -474,15 +468,10 @@ class ElectricitySession extends HWPTSession {
           .then((value) => value.data);
       var meterId = currentRoomInfo['Data']['meterList'][0]['meterId'];
 
-      await preference.setString(
-        preference.Preference.locationWM,
-        meterId,
-      );
-
       /// 获取电表余额
       var meterBalance = await dioXFEWM
           .get(
-            "http://xfewm.gxmu.edu.cn/ICBS_V2_Server/v3/XINTF/GetReserve?MeterID=${preference.getString(preference.Preference.locationWM)}",
+            "http://xfewm.gxmu.edu.cn/ICBS_V2_Server/v3/XINTF/GetReserve?MeterID=$meterId",
             options: Options(headers: {"authorization": "Bearer $accessJwt"}),
           )
           .then((value) => value.data);
